@@ -33,7 +33,7 @@ int main(void){
 	// 次のポインタが自身を指していたら終了
 	while (x != x->next){
 		for (int i = 1; i < M; i++)
-			x = x->next;
+			x = x->next;	// 次の要素に移動
 		x->next = x->next->next;	// リンク要素の削除
 		N--;
 	}
