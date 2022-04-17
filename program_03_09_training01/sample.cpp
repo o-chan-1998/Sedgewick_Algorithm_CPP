@@ -12,14 +12,14 @@
 using namespace std;
 
 struct Node{
-	int X;
-	int Y;
+	long X;
+	long Y;
 	Node *next;
 };
 
 int main(void){
 
-	int N, S, D;
+	long N, S, D;
 	cin >> N >> S >> D;
 	
 	Node *t = new Node();
@@ -34,13 +34,14 @@ int main(void){
 	}
 
 	// 次のポインタが自身を指していたら終了
-	while (lp != lp->next){
+	while (N--){
 		if(lp->X<S && D<lp->Y){
-			cout << "YES" << endl;
+			cout << "Yes" << endl;
 			return EXIT_SUCCESS;
+		}else{
+			lp = lp->next;
 		}
-		lp = lp->next;
-		lp->next = lp->next->next;	// 調査済み要素削除
+		// lp->next = lp->next->next;	// 調査済み要素削除
 	}
 	cout << "No" << endl;
 	return EXIT_SUCCESS;
