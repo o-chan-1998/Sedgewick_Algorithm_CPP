@@ -39,16 +39,16 @@ int main(void){
 			if(X && (Y^carry)){		// Y^carryはYとcarryの排他的論理和
 									// Y^carryが1となるのは(x,y)=(1,0),(0,1)
 									// この状態とX(x and y)=1は両立しない
-				cout << "No";
-				return EXIT_SUCCESS;
+				carry = 1;
+				break;
 			}else if(X){
 				carry = 1;	// X=trueは(x,y)=(1,1)なので繰り上がりが起きる
 			}else{
-				carry = (!Y) && carry;	// Yが0((x,y)=(0,0))のとき、繰り上がりが続く
+				carry = (!Y & carry);	// Yが0((x,y)=(1,1))のとき、繰り上がりが続く
 			}
 		}
 
-		if(carry){	// 最終的に繰り上がりが残る時
+		if(!carry){	// 最終的に繰り上がりがない時
 			cout << "Yes" << endl;
 		}else{
 			cout << "No" << endl;
