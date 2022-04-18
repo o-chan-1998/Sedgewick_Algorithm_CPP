@@ -24,7 +24,7 @@ int main(void){
 
 	string S;
 	cin >> S;
-	cout << S.length();
+
 	long l=0, r=S.length(); 
 
 	rep(i,S.length()){
@@ -45,8 +45,8 @@ int main(void){
 	}
 
 	// 回文チェック
-	rep(i, (r-l)/2+1){
-		if (S[l]==S[r-1]){
+	rep(i, S.length()-1){
+		if (S[l]==S[r-1] && l<r){
 			l++; r--;
 		}else{
 			break;
