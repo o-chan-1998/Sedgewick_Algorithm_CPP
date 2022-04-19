@@ -22,37 +22,49 @@ using ll = long long;
 
 int main(void){
 
-	int T; 
-	cin >> T;
+	int T; cin >> T;
 
 	while(T--){
-		ll s, a; 
-		cin >> s >> a;
+		ll s, a;
+		cin >> a >> s;
 
 		ll sum=0, carry=0;
+		// sとaで桁数の長い方を格納
+		int bit_len = max(to_string(s).length(), to_string(a).length());
+		bool judge=true;
 		rep(i, 60){	// 下位から順に2進数変換
-			ll X=(ll(1)<<i)&a;	// aを2進数に変換(X)
-			ll Y=(ll(1)<<i)&s;	// sを2進数に変換(Y)
-			X = !!X;	// Xを10進数から0/1に変換(二重否定(!!)で0/1変換できる)
-			Y = !!Y;	// Xを10進数から0/1に変換(二重否定(!!)で0/1変換できる)
-			
-			if(X && (Y^carry)){		// Y^carryはYとcarryの排他的論理和
-									// Y^carryが1となるのは(x,y)=(1,0),(0,1)
-									// この状態とX(x and y)=1は両立しない
+			ll x=(ll(1)<<i)&a; 	// xの値はaの値に固定
+			ll y=(ll(1)<<i)&s;
+			x = !!x;
+			y = !!y;
+
+			// 採りうる組み合わせ条件で場合分け
+			if(x==0 && carry==0 && y==0){
+				carry = 0;
+			}else if(x==0 && carry==0 && y==1){
+				carry = 0;
+			}else if(x==0 && carry==1 && y==0){
 				carry = 1;
+			}else if(x==0 && carry==1 && y==1){
+				carry = 0;
+			}else if(x==1 && carry==0 && y==0){
+				carry = 1;
+			}else if(x==1 && carry==0 && y==1){
+				judge=false;
 				break;
-			}else if(X){
-				carry = 1;	// X=trueは(x,y)=(1,1)なので繰り上がりが起きる
-			}else{
-				carry = (!Y & carry);	// Yが0((x,y)=(1,1))のとき、繰り上がりが続く
+			}else if(x==1 && carry==1 && y==0){
+				judge=false;
+				break;
+			}else if(x==1 && carry==1 && y==1){
+				carry = 1;
 			}
 		}
 
-		if(!carry){	// 最終的に繰り上がりがない時
+		if(carry==0 && judge==true)
 			cout << "Yes" << endl;
-		}else{
+		else
 			cout << "No" << endl;
-		}
+
 	}
 
 	return EXIT_SUCCESS;
