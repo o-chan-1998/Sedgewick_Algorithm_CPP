@@ -22,27 +22,31 @@ using vi = vc<int>; using vvi = vv<int>;
 using vl = vc<long>; using vvl = vv<long>;
 using ll = long long;
 
-ll S(ll A, ll B){
-	A %= MODDEF;
-	B %= MODDEF;
-	return (B-A+1)*(A+B)/2; //	要素数×(初項＋末項)÷2
-}
-
 int main(void){
 
+	// https://atcoder.jp/contests/abc238/submissions/29075048
+
 	ll N; cin >> N;
+	ll d=1;
 	ll ans=0;
-	srep(i, 1, 19){
-		if(pow(10,i)<=N){
-			ans += S(1,9*pow(10,i-1));
-			ans %= MODDEF;
-		}else{	// 1～(N-10^i+1)の和
-			ans += S(1, N-pow(10,i-1)+1);
-			ans %= MODDEF;
-			break;
-		}
+
+	while(d*10<=N){
+		d *= 10;
 	}
 
+	while(d>0){
+		ll c=N-d+1;
+
+		if(c&1){	// 奇数(1の位が2進数で1)
+			ans = (ans+(((c+1)/2)%MODDEF)*(c%MODDEF))%MODDEF;
+
+		}else{		//偶数
+			ans = (ans+((c+1)%MODDEF)*((c/2)%MODDEF))%MODDEF;
+		}
+
+		N -= c;
+		d /= 10;
+	}
 	cout << ans << endl;
 
 	return EXIT_SUCCESS;

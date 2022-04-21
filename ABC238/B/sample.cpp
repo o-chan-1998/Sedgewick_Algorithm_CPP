@@ -24,7 +24,7 @@ using ll = long long;
 int main(void){
 
 	int N; cin >> N;
-	vector<int> A(N), Cut(N);
+	vector<int> A(N), Cut(N, 0);
 
 	rep(i,N){
 		cin >> A[i];
@@ -39,7 +39,7 @@ int main(void){
 	sort(rng(Cut));
 	Cut.push_back(360);
 
-	int ans=0;
+	int ans=Cut[0];
 	srep(i,1,N+2){
 		ans = max(ans, Cut[i]-Cut[i-1]);
 	}
