@@ -22,30 +22,30 @@ using vi = vc<int>; using vvi = vv<int>;
 using vl = vc<long>; using vvl = vv<long>;
 using ll = long long;
 
-bool judge(int X);
+int distance(long x3, long y3, long x2, long y2);
 
 int main(){
 
-	int x1, y1, x2, y2;
+	long x1, y1, x2, y2;
 	cin >> x1 >> y1 >> x2 >> y2;
 
 	bool judge=false;
 
-	if((x1+2)==x2 && (y1+1)==y2){
+	if(distance(x1+2,y1+1,x2,y2)==5){
 		judge=true;
-	}else if((x1+2)==x2 && (y1-1)==y2){
+	}else if(distance(x1+2,y1-1,x2,y2)==5){
 		judge=true;
-	}else if((x1+1)==x2 && (y1+2)==y2){
+	}else if(distance(x1+1,y1+2,x2,y2)==5){
 		judge=true;
-	}else if((x1+1)==x2 && (y1-2)==y2){
+	}else if(distance(x1+1,y1-2,x2,y2)==5){
 		judge=true;
-	}else if((x1-1)==x2 && (y1+2)==y2){
+	}else if(distance(x1-1,y1+2,x2,y2)==5){
 		judge=true;
-	}else if((x1-1)==x2 && (y1-2)==y2){
+	}else if(distance(x1-1,y1-2,x2,y2)==5){
 		judge=true;
-	}else if((x1-2)==x2 && (y1+1)==y2){
+	}else if(distance(x1-2,y1+1,x2,y2)==5){
 		judge=true;
-	}else if((x1-2)==x2 && (y1-1)==y2){
+	}else if(distance(x1-2,y1+1,x2,y2)==5){
 		judge=true;
 	}
 
@@ -57,3 +57,6 @@ int main(){
 	return EXIT_SUCCESS;
 }
 
+int distance(long x3, long y3, long x2, long y2){
+	return pow((x3-x2),2)+pow((y3-y2),2);
+}
