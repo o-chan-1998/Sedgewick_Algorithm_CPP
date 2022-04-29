@@ -35,7 +35,7 @@ int main()
 {
     int N;
     cin >> N;
-    bitset<100001> dp;
+    bitset<100001> dp;  // 使用するビット数(33bit)
 
     dp[0] = 1;
 
