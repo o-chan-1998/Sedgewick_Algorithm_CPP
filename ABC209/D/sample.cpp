@@ -73,7 +73,7 @@ int main()
 
 void dfs(int now, int par, int d)
 {
-    depth[d] = now;
+    depth[now] = d;
     for (int nextD : edge[now])
     {
         if (nextD == par)
