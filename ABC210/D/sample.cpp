@@ -32,93 +32,46 @@ using vl = vc<long>;
 using vvl = vv<long>;
 using ll = long long;
 using vll = vc<ll>;
+using vvll = vv<ll>;
 
-const int MAXN=1005;
-ll a[MAXN][MAXN], pref[MAXN][MAXN][5], v[MAXN][MAXN][5];
+#define INF 1e18
 
 int main()
 {
     int H, W;
-    ll c;
-    cin >> H >> W >> c;
-    rep1(i,H)
-    {
-        rep1(j,W){
-            cin >> a[i][j]; // 標準入力
+    ll C;
+    cin >> H >> W >> C;
+
+    vvi A(H, vi(W));
+
+    rep(i,H){
+        rep(j,W){
+            cin >> A[i][j];
         }
     }
 
-    // 最適値配列
-    rep(i,MAXN)
-    {
-        rep(j,MAXN)
-        {
-            rep(k,5)
-                pref[i][j][k] = 1e18;
-        }
-    }
+    ll ans=INF;
 
-    // 
-    rep1(i,H)
-    {
-        rep1(j,W)
-        {
-            v[i][j][1] = a[i][j] - c * i - c * j;
-            v[i][j][2] = a[i][j] - c * i + c * j;
-            v[i][j][3] = a[i][j] + c * i - c * j;
-            v[i][j][4] = a[i][j] + c * i + c * j;
-        }
-    }
+    rep(_,2){
+        vvll d(H, vll(W, INF));
 
-    // パターン1
-    rep1(i,H)
-    {
-        rep1(j,W)
-        {
-            pref[i][j][1] = min(pref[i - 1][j][1], min(pref[i][j - 1][1], v[i][j][1]));
+        rep(i,H){
+            rep(j,W){
+                if(i>0){
+                    d[i][j]=min(d[i][j], d[i-1][j]);
+                }
+                if(j>0){
+                    d[i][j]=min(d[i][j], d[i][j-1]);
+                }
+                ans = min(ans, A[i][j]+(i+j)*C+d[i][j]);
+                d[i][j] = min(d[i][j], A[i][j]-(i+j)*C);
+            }
         }
-    }
 
-    // パターン2
-    rep1(i,H)
-    {
-        drep1(j,W)
-        {
-            pref[i][j][2] = min(pref[i - 1][j][2], min(pref[i][j + 1][2], v[i][j][2]));
-        }
-    }
-
-    // パターン3
-    drep1(i,H)
-    {
-        rep1(j,W)
-        {
-            pref[i][j][3] = min(pref[i + 1][j][3], min(pref[i][j - 1][3], v[i][j][3]));
-        }
-    }
-
-    // パターン4
-    drep1(i,H)
-    {
-        drep1(j,W)
-        {
-            pref[i][j][4] = min(pref[i + 1][j][4], min(pref[i][j + 1][4], v[i][j][4]));
-        }
-    }
-
-    ll ans = 1e18;
-    rep1(i,H)
-    {
-        rep1(j,W)
-        {
-            ans = min(ans, v[i][j][4] + min(pref[i][j - 1][1], pref[i - 1][j][1]));
-            ans = min(ans, v[i][j][3] + min(pref[i][j + 1][2], pref[i - 1][j][2]));
-            ans = min(ans, v[i][j][2] + min(pref[i][j - 1][3], pref[i + 1][j][3]));
-            ans = min(ans, v[i][j][1] + min(pref[i][j + 1][4], pref[i + 1][j][4]));
-        }
+        reverse(A.begin(), A.end());
     }
 
     cout << ans << endl;
-    
-    return EXIT_SUCCESS;
+
+   return EXIT_SUCCESS;
 }
