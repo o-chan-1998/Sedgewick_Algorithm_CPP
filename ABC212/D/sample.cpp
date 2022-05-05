@@ -50,36 +50,28 @@ public:
 
 int main()
 {
-    int Q, P;
+    int Q;
     cin >> Q;
 
     // ヒープキューの用意
     priority_queue<ll, vll, greater<ll>> que;
     // 加算要素用意
-    vll addT(Q+1, 0);
-    // 累積領域用意
-    vll sumR(Q+1, 0);
+    ll S=0;
 
     rep1(i,Q){
         int P;
-        int X;
         cin >> P;
-        if(P==1){
-            cin >> X;
-            addT[i]=0;
-            sumR[i]=sumR[i-1]+addT[i];
-            if(sumR[i]>0){
-                que.push(X);
-            }
-            else{
-                que.push(X-sumR[i]);
-            }
-        }else if(P==2){
-            cin >> X;
-            addT[i]=X;
-            sumR[i]=sumR[i-1]+addT[i];
+        if(P==3){
+            cout << que.top()+S << endl;
+            que.pop();  // 取り出したものは捨てる
         }else{
-            cout << que.top()+sumR[i] << endl;
+            int X;
+            cin >> X;
+            if(P==1){
+                que.push(X-S);
+            }else{
+                S += X;
+            }
         }
     }
 
