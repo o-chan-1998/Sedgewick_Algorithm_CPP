@@ -113,29 +113,71 @@ public:
 
 int main()
 {
+  // ファイル出力
+  const char *fileName = "trace.txt";
+  ofstream ofs(fileName);
+  if (!ofs)
+  {
+    cout << "ファイルが開けませんでした。" << endl;
+    cin.get();
+    return 0;
+  }
+
   int n;
   cin >> n;
   vector<int> a(n), b(n);
   rep(i, n) cin >> a[i];
   rep(i, n) cin >> b[i];
-  const int M = 3001;
+  const int M = 16;
   vector<mint> dp(M);
   dp[0] = 1;
   rep(i, n)
   {
     vector<mint> p(M);
+
+    ofs << i << "番目" << endl;
+    rep(i, M)
+            ofs
+        << dp[i] << " ";
+    ofs << endl;
+    rep(i, M)
+            ofs
+        << p[i] << " ";
+    ofs << endl << endl;
+
     swap(dp, p);
-    rep(j, M - 1) p[j + 1] += p[j];
+
+    ofs << "- swap -" << endl;
+    rep(i, M)
+            ofs
+        << dp[i] << " ";
+    ofs << endl;
+    rep(i, M)
+            ofs
+        << p[i] << " ";
+    ofs << endl << endl;
+
+    rep(j, M - 1)
+      p[j + 1] += p[j];
+    rep(i, M)
+            ofs << p[i] << " ";
+    ofs << endl << endl;
+
     rep(j, M)
     {
       if (a[i] <= j && j <= b[i])
       {
         dp[j] += p[j];
       }
+      ofs << dp[j] << " ";
     }
+    ofs << endl << endl;
   }
   mint ans;
   rep(i, M) ans += dp[i];
   cout << ans << endl;
+
+  ofs.close();
+
   return 0;
 }
