@@ -9,7 +9,6 @@
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -39,14 +38,14 @@ constexpr int mod = 1000000007;
 class mint
 {
 public:
-    long long x;
-    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
-    constexpr mint &operator+=(const mint &a)
-    {
-        if ((x += a.x) >= mod)
-            x -= mod;
-        return *this;
-    }
+	long long x;
+	constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+	constexpr mint &operator+=(const mint &a)
+	{
+		if ((x += a.x) >= mod)
+			x -= mod;
+		return *this;
+	}
 };
 
 int n;
@@ -56,55 +55,26 @@ int dp[110000][3];
 // 1: yama
 // 2: HW
 
-int main()
-{
-    // ファイル出力
-    const char *fileName = "trace.txt";
-    ofstream ofs(fileName);
-    if (!ofs)
-    {
-        cout << "ファイルが開けませんでした。" << endl;
-        cin.get();
-        return 0;
-    }
-
+int main(){
     cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
+    for(int i = 1;i <= n;i++){
         cin >> happy[i][0] >> happy[i][1] >> happy[i][2];
     }
 
-    for (int i = 1; i <= n; i++)
-    {
-        for (int place = 0; place < 3; place++)
-        {
-
-            for (int placeY = 0; placeY < 3; placeY++)
-            {
-                if (place == placeY)
-                    continue;
+    for(int i = 1;i <= n;i++){
+        for(int place = 0;place < 3;place++){
+            for(int placeY = 0; placeY < 3;placeY++){
+                if(place == placeY)continue;
                 dp[i][place] = max(dp[i][place],
-                                   dp[i - 1][placeY] + happy[i][place]);
+                                   dp[i-1][placeY] + happy[i][place]);
             }
-
- 
-            rep(i,n+1){
-                rep(j,3)
-                    ofs << dp[i][j] << " ";
-                ofs << endl;
-            }
-            ofs << "-----" << endl;
-
         }
     }
-
+    
     int ans = 0;
-    for (int place = 0; place < 3; place++)
-    {
+    for(int place = 0;place < 3;place++){
         ans = max(ans, dp[n][place]);
     }
     cout << ans << endl;
-    ofs.close();
-
     return 0;
 }
