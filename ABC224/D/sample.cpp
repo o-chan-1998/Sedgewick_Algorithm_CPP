@@ -71,15 +71,19 @@ int main()
   }
 
   rep(i, n)
-    ofs << s[i] << " ";
-  ofs << endl << endl;
+          ofs
+      << s[i] << " ";
+  ofs << endl
+      << endl;
 
   vector<int> t(n, -1);
   rep(i, n - 1) t[i] = i;
 
   rep(i, n)
-    ofs << t[i] << " ";
-  ofs << endl << endl;
+          ofs
+      << t[i] << " ";
+  ofs << endl
+      << endl;
 
   map<vector<int>, int> dist;
   queue<vector<int>> q;
@@ -87,25 +91,75 @@ int main()
   dist[s] = 0;
 
   ofs << dist[s] << " ";
-  ofs << endl << endl;
+  ofs << endl
+      << endl;
 
   q.push(s);
+
+  ofs << typeid(q.front()).name() << " ";
+  ofs << endl << endl;
+
   while (q.size())
   {
     s = q.front();
+
+    rep(i, n)
+            ofs
+        << s[i] << " ";
+    ofs << "(1)---" << endl
+        << endl;
+
     q.pop();
     int d = dist[s];
+
+    ofs << "(*)---" << d << "---" << endl;
+
     rep(v, n) if (s[v] == -1)
     {
       for (int u : to[v])
       {
         swap(s[u], s[v]);
+
+        ofs << "u: " << u << endl;
+        ofs << "v: " << v << endl;
+        rep(i, n)
+                ofs
+            << s[i] << " ";
+        ofs << "(2)---" << endl
+            << endl;
+
         if (dist.find(s) == dist.end())
         {
           dist[s] = d + 1;
+
+          ofs << "u: " << u << endl;
+          ofs << "v: " << v << endl;
+          rep(i, n)
+                  ofs
+              << s[i] << " ";
+          ofs << "(push)---" << endl
+              << endl;
+
           q.push(s);
         }
+        else
+        {
+          ofs << "u: " << u << endl;
+          ofs << "v: " << v << endl;
+          rep(i, n)
+                  ofs
+              << s[i] << " ";
+          ofs << "(Nopush)---" << endl
+              << endl;
+        }
         swap(s[u], s[v]);
+        ofs << "u: " << u << endl;
+        ofs << "v: " << v << endl;
+        rep(i, n)
+                ofs
+            << s[i] << " ";
+        ofs << "(3)---" << endl
+            << endl;
       }
     }
   }
@@ -113,7 +167,7 @@ int main()
     cout << -1 << endl;
   else
     cout << dist[t] << endl;
- 
+
   ofs.close();
 
   return 0;
