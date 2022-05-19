@@ -45,6 +45,8 @@ using vvll = vv<ll>;
 #include <string>
 #include <queue>
 #include <stack>
+#include <fstream>
+
 using namespace std;
 #define MOD 1000000007
 #define MOD2 998244353
@@ -55,11 +57,21 @@ typedef long long Int;
 typedef pair<Int, Int> P;
 
 Int n, W;
-Int v[10], w[10];
-Int dp[10][10];
+Int v[100], w[100];
+Int dp[100][100];
 
 int main()
 {
+  // ファイル出力
+  const char *fileName = "trace.txt";
+  ofstream ofs(fileName);
+  if (!ofs)
+  {
+    cout << "ファイルが開けませんでした。" << endl;
+    cin.get();
+    return 0;
+  }
+
 	cin >> n >> W;
 	for (int i = 1; i <= n; i++)
 		cin >> w[i] >> v[i];
@@ -68,11 +80,19 @@ int main()
 	{
 		for (int j = 0; j <= W; j++)
 		{
+				rep(j,W+1) 
+					ofs << dp[i][j] << " ";
+				ofs << endl;
+
 			dp[i][j] = dp[i - 1][j];
 			if (j - w[i] >= 0)
 				dp[i][j] = max(dp[i][j], dp[i - 1][j - w[i]] + v[i]);
 		}
+		ofs << endl;
 	}
 	cout << dp[n][W] << endl;
+
+    ofs.close();
+
 	return EXIT_SUCCESS;
 }
