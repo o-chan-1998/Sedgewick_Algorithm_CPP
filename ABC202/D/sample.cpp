@@ -6,6 +6,7 @@
 #include <iomanip> // std::setw(int), std::setfill(char)
 #include <queue>
 #include <map>
+#include <fstream>
 
 using namespace std;
 
@@ -34,6 +35,16 @@ ll C[61][61];   // パスカルの三角形
 
 int main()
 {
+  // ファイル出力
+  const char *fileName = "trace.txt";
+  ofstream ofs(fileName);
+  if (!ofs)
+  {
+    cout << "ファイルが開けませんでした。" << endl;
+    cin.get();
+    return 0;
+  }
+
     int A, B;
     ll K;
 
@@ -41,30 +52,48 @@ int main()
     string ans; // K番目の文字列
 
     C[0][0]=1;
-    rep(i,60){
+    rep(i,10){
         rep(j,i+1){
             C[i+1][j]+=C[i][j]; // パスカルの三角形イメージ
             C[i+1][j+1]+=C[i][j];   // パスカルの三角形イメージ
         }
     }
+    rep(i,10){
+ofs << "C[" << i << "]: " << " ";
+        rep(j,10){
+ofs << C[i][j] << " ";
+        }
+ofs << endl;        
+    }
 
+ofs << "    while(A+B(" << A+B << ")>0){" << endl;
     while(A+B>0){
         ll x=0;   // Aから始まる文字列
+ofs << "        if(A(" << A << ")>=1){" << endl;
         if(A>=1){
             x=C[A+B-1][A-1];
+ofs << "            x(" << x << ")=C[A+B-1(" << A+B-1 << ")][A-1(" << A-1 << ")](" << C[A+B-1][A-1] << ");" << endl;
         }
+ofs << "        if(K(" << K << ")<=x(" << x << ")){" << endl;
         if(K<=x){
             ans += 'a';
+ofs << "            ans(" << ans << ") += 'a';" << endl;
+ofs << "            A(" << A << ")--;" << endl;
             A--;
         }else{
+ofs << "        }else{" << endl;
             ans += 'b';
+ofs << "            ans(" << ans << ") += 'b';" << endl;
             B--;
+ofs << "            B(" << B << ")--;" << endl;
+ofs << "            K(" << K << ") -= x(" << x << ");" << endl;
             K -= x; // KのインデックスをX(Aの数分減らす)
         }
     }
 
     cout << ans << endl;
 
+  ofs.close();
     return EXIT_SUCCESS;
 }
 
