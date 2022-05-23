@@ -9,7 +9,6 @@
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -41,54 +40,28 @@ double p[3300];
 
 int main()
 {
-    // ファイル出力
-    const char *fileName = "trace.txt";
-    ofstream ofs(fileName);
-    if (!ofs)
-    {
-    cout << "ファイルが開けませんでした。" << endl;
-    cin.get();
-    return 0;
-    }
-
     cin >> n;
-
-    rep1(i,n){
+    for (int i = 1; i <= n; i++)
         cin >> p[i];
-    }
+    dp[0][0] = 1;
 
-    dp[0][0]=1;
-
-    rep1(i,n){
-        ofs << "---(" << i << ")---" << endl;
-        rep(j,i+1){
-            if(j==0){
-                // 1列目
-                dp[i][j]=dp[i-1][j]*(1-p[i]);
-            }
-            else{
-                dp[i][j]=dp[i-1][j]*(1-p[i])+dp[i-1][j-1]*p[i];
-            }
-        }
-        rep(ii,n+1){
-            rep(jj,n+1){
-                ofs << dp[ii][jj] << " ";
-            }
-            ofs << endl;
-        }
-        ofs << endl;
-    }
-
-    double ans=0.0;
-    rep(i,n+1){
-        if(i>n-i){
-            ans+=dp[n][i];
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            dp[i][j] = dp[i - 1][j] * (1 - p[i]);
+            if (j - 1 >= 0)
+                dp[i][j] += dp[i - 1][j - 1] * p[i];
         }
     }
 
-    cout << ans << endl;
+    double ans;
+    for (int i = 0; i <= n; i++)
+    {
+        if (i > n - i)
+            ans += dp[n][i];
+    }
+    printf("%.15lf\n", ans);
 
-    ofs.close();
-
-    return EXIT_SUCCESS;
+    return 0;
 }
