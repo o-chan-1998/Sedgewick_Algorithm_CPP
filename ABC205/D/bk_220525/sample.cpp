@@ -32,47 +32,41 @@ using vvl = vv<long>;
 using ll = long long;
 using vll = vc<ll>;
 
-int main(){
-    int n, q;
-    cin >> n >> q;
-
-    vll a(n+2),b(n+2);
-
-    rep1(i,n){
-        cin >> a[i];
+int main()
+{
+    int N, Q;
+    cin >> N >> Q;
+    vll A(N);
+    rep(i, N)
+    {
+        cin >> A[i];
     }
-    a[n+1]=LLONG_MAX;
-    rep1(i,n){
-        b[i] = a[i]-a[i-1]-1+b[i-1];
+    vll C(N);
+    rep(i, N)
+    {
+        C[i] = A[i] - i - 1;
     }
-    b[n+1]=LLONG_MAX;
 
-    rep(i,q){
-        int k;
-        int point=0;
-        cin >> k; 
-        rep1(j,n+1){
-            if(k<=b[j]){
-                point = j;
-                break;
-            }
+    rep(qi, Q)
+    {
+        ll K;
+        cin >> K;
+
+        // 探索したいK以上のイテレータを返す
+        int r = lower_bound(C.begin(), C.end(), K) - C.begin();
+
+        ll ans;
+        if (r == 0)
+        {
+            ans = K;
         }
-        cout << a[point-1]+k-b[point-1] << " ";
+        else
+        {
+            // A_r-1から(K-C[r - 1])個後ろの数値
+            ans = A[r - 1] + (K - C[r - 1]);
+        }
+        cout << ans << endl;
     }
-
-    cout << endl;
 
     return EXIT_SUCCESS;
 }
-
-// 【入力】
-// 4 3
-// 3 5 6 7
-// 2
-// 5
-// 3
-// [1],[2],3,[4],5,6,7,[8],[9]
-// 【出力】
-// 2
-// 9
-// 4
