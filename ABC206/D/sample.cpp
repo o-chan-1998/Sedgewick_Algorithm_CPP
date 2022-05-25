@@ -32,94 +32,52 @@ using vl = vc<long>;
 using vvl = vv<long>;
 using ll = long long;
 using vll = vc<ll>;
-
-struct UnionFind
-{
-    vector<int> parent, rank, cnt;
-
-    UnionFind(int n) : parent(n), rank(n, 0), cnt(n, 1)
-    {
-        iota(parent.begin(), parent.end(), 0);
-    }
-
-    int find(int v)
-    {
-        if (v == parent[v])
-        {
-            return v;
-        }
-        return parent[v] = find(parent[v]);
-    }
-
-    bool same(int v, int w)
-    {
-        return find(v) == find(w);
-    }
-
-    void unite(int v, int w)
-    {
-        v = find(v);
-        w = find(w);
-
-        if (v == w)
-        {
-            return;
-        }
-
-        if (rank[v] > rank[w])
-        {
-            parent[w] = v;
-            cnt[v] += cnt[w];
-        }
-        else
-        {
-            parent[v] = w;
-            cnt[w] += cnt[v];
-            if (rank[v] == rank[w])
-            {
-                rank[w] += 1;
-            }
-        }
-    }
-
-    int count(int v)
-    {
-        return cnt[find(v)];
-    }
+struct UnionFind{
+ 
+  vector<int>par;
+  vector<int>rank;
+ 
+  UnionFind(int size){
+    rank.resize(size,1);
+    par.resize(size);
+    for(int i=0;i<size;i++)par[i]=i;
+  }
+ 
+  void unite(int node1,int node2){
+    if(is_connected(node1,node2))return;
+    node1=find(node1);
+    node2=find(node2);
+    if(rank[node1]>rank[node2])swap(node1,node2);
+    par[node1]=node2,rank[node2]+=rank[node1];
+  }
+  int find(int node){
+    if(par[node]==node)return node;
+    return par[node]=find(par[node]);
+  }
+  bool is_connected(int node1,int node2){
+    return find(node1)==find(node2);
+  }
+  int size(int node){
+    return rank[find(node)];
+  }
+ 
 };
-
-UnionFind uf(200100);
-
-int main()
-{
+ 
+int main(){
+ 
     int N;
-    cin >> N;
-
-    vi A(N);
-    rep(i, N)
-    {
-        cin >> A[i];
-    }
-
-    rep(i, N / 2)
-    {
-        if (A[i] != A[N - i - 1])
-        {
-            uf.unite(A[i], A[N - 1 - i]);
+    cin>>N;
+    vector<int>A(N);
+    for(int i=0;i<N;i++)cin>>A[i];
+    UnionFind uf(200000);
+    int ans=0;
+    for(int i=0;i<N/2;i++){
+        if(!uf.is_connected(A[i],A[N-1-i])){
+            ans++;
+            uf.unite(A[i],A[N-1-i]);
         }
     }
-
-    int res = 0;
-
-    rep1(i, 200000)
-    {
-        if (uf.find(i) == i)
-        {
-            res += uf.count(i) - 1;
-        }
-    }
-
-    cout << res << endl;
-
-    return EXIT_SUCCESS;
+    cout<<ans<<endl;
+ 
+    return 0;
 }
