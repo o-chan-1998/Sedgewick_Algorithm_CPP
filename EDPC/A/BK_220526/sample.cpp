@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,12 +34,40 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+};
+
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int N;
+    cin >> N;
+    vi dp(N);
+    vi h(N);
+
+    rep(i,N){
+        cin >> h[i];
+    }
+
+    dp[0]=0;
+    rep1(i,N-1){
+        if(i==1){
+            dp[i]=dp[i-1]+abs(h[i]-h[i-1]);
+        }else{
+            dp[i]=min(dp[i-1]+abs(h[i]-h[i-1]),dp[i-2]+abs(h[i]-h[i-2]));
+        }
+    }
+    cout << dp[N-1] << endl;
 
     return EXIT_SUCCESS;
 }
