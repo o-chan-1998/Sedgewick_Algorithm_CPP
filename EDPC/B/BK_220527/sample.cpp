@@ -54,7 +54,7 @@ int main()
 		cin >> h[i];
 	}
 
-	vll dp(n+k,INF);
+	vector dp(n+k,INF);
 
 	dp[0]=0;
 
@@ -64,7 +64,7 @@ int main()
 		}
 	}
 
-	cout << dp[n-1] << endl;
+	cout << dp[0] << endl;
 
     return EXIT_SUCCESS;
 }

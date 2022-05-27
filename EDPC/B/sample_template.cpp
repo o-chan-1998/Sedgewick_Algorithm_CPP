@@ -36,8 +36,6 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-const ll INF = 1LL << 60;
-
 int main()
 {
 	// IO高速化のおまじない
@@ -45,26 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	int n, k;
-	cin >> n >> k;
-
-	vll h(n+k,0);
-
-	rep(i,n){
-		cin >> h[i];
-	}
-
-	vll dp(n+k,INF);
-
-	dp[0]=0;
-
-	rep(i,n){
-		rep1(j,k){
-			dp[i+j]=min(dp[i+j],dp[i]+abs(h[i+j]-h[i]));
-		}
-	}
-
-	cout << dp[n-1] << endl;
 
     return EXIT_SUCCESS;
 }
