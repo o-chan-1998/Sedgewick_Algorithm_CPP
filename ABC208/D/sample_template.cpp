@@ -43,38 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    int n, m;
-    cin >> n >> m;
-    const int INF = 1001001001;
-
-    vvi f(n, vi(n,INF));
-
-    rep(i,n){
-        f[i][i]=0;
-    }
-
-    rep(i,m){
-        int a,b,c;
-        cin >> a >> b >> c;
-        a--;
-        b--;
-        f[a][b]=c;
-    }
-
-    ll ans=0;
-    rep(k,n){
-        rep(i,n){
-            rep(j,n){
-                // ワーシャルフロイド方法
-                f[i][j]=min(f[i][j],f[i][k]+f[k][j]);
-                if(f[i][j]!=INF){
-                    ans += f[i][j];
-                }
-            }
-        }
-    }
-
-    cout << ans << endl;
 
     return EXIT_SUCCESS;
 }

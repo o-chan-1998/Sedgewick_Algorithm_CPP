@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,45 +34,33 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+};
+
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int a, b, c;
+    cin >> a >> b >> c;
+    
+    priority_queue<int, std::vector<int>, std::greater<int>> q;
+    q.push(a);
+    q.push(b);
+    q.push(c);
 
-    int n, m;
-    cin >> n >> m;
-    const int INF = 1001001001;
-
-    vvi f(n, vi(n,INF));
-
-    rep(i,n){
-        f[i][i]=0;
+    while(!q.empty()){
+        cout << q.top() << endl;
+        q.pop();
     }
-
-    rep(i,m){
-        int a,b,c;
-        cin >> a >> b >> c;
-        a--;
-        b--;
-        f[a][b]=c;
-    }
-
-    ll ans=0;
-    rep(k,n){
-        rep(i,n){
-            rep(j,n){
-                // ワーシャルフロイド方法
-                f[i][j]=min(f[i][j],f[i][k]+f[k][j]);
-                if(f[i][j]!=INF){
-                    ans += f[i][j];
-                }
-            }
-        }
-    }
-
-    cout << ans << endl;
-
     return EXIT_SUCCESS;
 }

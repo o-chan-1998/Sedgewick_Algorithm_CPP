@@ -6,18 +6,15 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
-#define rep(i, H) for (int i = 0; i < H; i++)
-#define rep1(i, H) for (int i = 1; i <= H; i++)
-#define drep(i, H) for (int i = H - 1; i >= 0; i--)
-#define drep1(i, H) for (int i = H; i >= 1; i--)
+#define rep(i, N) for (int i = 0; i < N; i++)
+#define rep1(i, N) for (int i = 1; i <= N; i++)
+#define drep(i, N) for (int i = N - 1; i >= 0; i--)
 #define srep(i, S, T) for (int i = S; i < T; i++)
 #define rng(a) a.begin(), a.end()
 
@@ -34,41 +31,34 @@ using vl = vc<long>;
 using vvl = vv<long>;
 using ll = long long;
 using vll = vc<ll>;
-using vvll = vv<ll>;
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int N, M;
+    cin >> N >> M;
 
-    int n, m;
-    cin >> n >> m;
-    const int INF = 1001001001;
-
-    vvi f(n, vi(n,INF));
-
-    rep(i,n){
+    const int INF=INT_MAX;
+    
+    vvi f(N,vi(N,INF));
+    rep(i,N){
         f[i][i]=0;
     }
 
-    rep(i,m){
-        int a,b,c;
-        cin >> a >> b >> c;
-        a--;
-        b--;
-        f[a][b]=c;
+    // 標準入力
+    rep(i,M){
+        int A,B,C;
+        cin >> A >> B >> C;
+        f[A-1][B-1]=C;
     }
 
-    ll ans=0;
-    rep(k,n){
-        rep(i,n){
-            rep(j,n){
-                // ワーシャルフロイド方法
-                f[i][j]=min(f[i][j],f[i][k]+f[k][j]);
+    // ワーシャル・フロイド
+    ll ans;
+    rep(k,N){
+        rep(i,N){
+            rep(j,N){
+                f[i][j]=min(f[i][j], f[i][k]+f[k][j]);
                 if(f[i][j]!=INF){
-                    ans += f[i][j];
+                    ans+=f[i][j];
                 }
             }
         }
