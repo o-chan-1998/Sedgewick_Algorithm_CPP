@@ -36,10 +36,6 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-ll n;
-ll happy[110000][3];
-ll dp[110000][3];
-
 int main()
 {
 	// IO高速化のおまじない
@@ -47,35 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    cin >> n;
-
-    rep1(i,n){
-        cin >> happy[i][0] >> happy[i][1] >> happy[i][2];
-    }
-
-    rep1(i,n){
-        rep(place,3){
-            rep(placeY,3){
-                if(place==placeY){
-                    continue;
-                }
-                ll check01 = dp[i][place];
-                ll check02 = dp[i-1][placeY]+happy[i][place];
-                if(check01>=check02){
-                    dp[i][place] = check01;
-                }else{
-                    dp[i][place] = check02;
-                }
-            }
-        }
-    }
-
-    ll ans = 0;
-    rep(place,3){
-        ans = max(ans, dp[n][place]);
-    }
-
-    cout << ans << endl;
 
     return EXIT_SUCCESS;
 }
