@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,54 +34,33 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-vi dep;
-vvi to;
-
-void dfs(int v, int _dep=0, int p=-1){
-  dep[v] = _dep;
-  for(int u:to[v]){
-    if(u==p){
-      continue;
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
     }
-    dfs(u,_dep+1, v);
-  }
-}
+};
 
 int main()
 {
-	// IO高速化のおまじない
-  ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int a, b, c;
+    cin >> a >> b >> c;
+    
+    priority_queue<int, std::vector<int>, std::greater<int>> q;
+    q.push(a);
+    q.push(b);
+    q.push(c);
 
-  int n, q;
-  cin >> n >> q;
-  to.resize(n);
-  rep(i,n-1){
-    int a, b;
-    cin >> a >> b;
-    a--;
-    b--;
-    to[a].push_back(b);
-    to[b].push_back(a);
-  }
-
-  dep.resize(n);
-  dfs(0);
-
-  rep(qi, q){
-    int c, d;
-    cin >> c >> d;
-    c--;
-    d--;
-    int ans = (dep[c]+dep[d])%2;
-
-    if(ans==0){
-      cout << "Town" << endl;
-    }else{
-      cout << "Road" << endl;
+    while(!q.empty()){
+        cout << q.top() << endl;
+        q.pop();
     }
-  }
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
