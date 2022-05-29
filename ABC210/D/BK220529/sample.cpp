@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,45 +34,44 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+#define INF 1e18
+
 int main()
 {
-	// IO高速化のおまじない
-  ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int H, W;
+    ll C;
+    cin >> H >> W >> C;
 
-  int h, w;
-  ll c;
-  cin >> h >> w >> c;
+    vvi A(H, vi(W));
 
-  vvi a(h, vi(w));
-  rep(i,h){
-    rep(j,w){
-      cin >> a[i][j];
-    }
-  }
-
-  const ll INF=1e18;
-  ll ans = INF;
-
-  rep(_,2){
-    vvll d(h, vll(w, INF));
-    rep(i,h){
-      rep(j,w){
-        if(i){
-          d[i][j]=min(d[i][j], d[i-1][j]);
+    rep(i,H){
+        rep(j,W){
+            cin >> A[i][j];
         }
-        if(j){
-          d[i][j]=min(d[i][j], d[i][j-1]);
-        }
-        ans = min(ans, a[i][j]+(i+j)*c+d[i][j]);
-        d[i][j] = min(d[i][j], a[i][j]-(i+j)*c);
-      }
     }
-    reverse(a.begin(), a.end());
-  }
 
-  cout << ans << endl;
+    ll ans=INF;
 
-  return EXIT_SUCCESS;
+    rep(_,2){
+        vvll d(H, vll(W, INF));
+
+        rep(i,H){
+            rep(j,W){
+                if(i>0){
+                    d[i][j]=min(d[i][j], d[i-1][j]);
+                }
+                if(j>0){
+                    d[i][j]=min(d[i][j], d[i][j-1]);
+                }
+                ans = min(ans, A[i][j]+(i+j)*C+d[i][j]);
+                d[i][j] = min(d[i][j], A[i][j]-(i+j)*C);
+            }
+        }
+
+        reverse(A.begin(), A.end());
+    }
+
+    cout << ans << endl;
+
+   return EXIT_SUCCESS;
 }

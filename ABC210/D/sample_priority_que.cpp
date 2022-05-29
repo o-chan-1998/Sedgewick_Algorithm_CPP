@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,45 +34,33 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+};
+
 int main()
 {
-	// IO高速化のおまじない
-  ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int a, b, c;
+    cin >> a >> b >> c;
+    
+    priority_queue<int, std::vector<int>, std::greater<int>> q;
+    q.push(a);
+    q.push(b);
+    q.push(c);
 
-  int h, w;
-  ll c;
-  cin >> h >> w >> c;
-
-  vvi a(h, vi(w));
-  rep(i,h){
-    rep(j,w){
-      cin >> a[i][j];
+    while(!q.empty()){
+        cout << q.top() << endl;
+        q.pop();
     }
-  }
-
-  const ll INF=1e18;
-  ll ans = INF;
-
-  rep(_,2){
-    vvll d(h, vll(w, INF));
-    rep(i,h){
-      rep(j,w){
-        if(i){
-          d[i][j]=min(d[i][j], d[i-1][j]);
-        }
-        if(j){
-          d[i][j]=min(d[i][j], d[i][j-1]);
-        }
-        ans = min(ans, a[i][j]+(i+j)*c+d[i][j]);
-        d[i][j] = min(d[i][j], a[i][j]-(i+j)*c);
-      }
-    }
-    reverse(a.begin(), a.end());
-  }
-
-  cout << ans << endl;
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }

@@ -39,42 +39,10 @@ using vvll = vv<ll>;
 int main()
 {
 	// IO高速化のおまじない
-  ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(false);
 	cin.tie(0);
 	cout.tie(0);
 
-  int h, w;
-  ll c;
-  cin >> h >> w >> c;
 
-  vvi a(h, vi(w));
-  rep(i,h){
-    rep(j,w){
-      cin >> a[i][j];
-    }
-  }
-
-  const ll INF=1e18;
-  ll ans = INF;
-
-  rep(_,2){
-    vvll d(h, vll(w, INF));
-    rep(i,h){
-      rep(j,w){
-        if(i){
-          d[i][j]=min(d[i][j], d[i-1][j]);
-        }
-        if(j){
-          d[i][j]=min(d[i][j], d[i][j-1]);
-        }
-        ans = min(ans, a[i][j]+(i+j)*c+d[i][j]);
-        d[i][j] = min(d[i][j], a[i][j]-(i+j)*c);
-      }
-    }
-    reverse(a.begin(), a.end());
-  }
-
-  cout << ans << endl;
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
