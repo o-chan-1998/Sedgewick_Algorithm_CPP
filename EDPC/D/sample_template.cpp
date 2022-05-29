@@ -36,10 +36,6 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-ll n, W;
-ll v[110], w[110];
-ll dp[110][110000];
-
 int main()
 {
 	// IO高速化のおまじない
@@ -47,22 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	cin >> n >> W;
-	
-	rep1(i,n){
-		cin >> w[i] >> v[i];
-	}
-
-	rep1(i,n){
-		rep(j,W+1){
-			dp[i][j] = dp[i-1][j];
-			if(j-w[i]>=0){
-				dp[i][j] = max(dp[i][j], dp[i-1][j-w[i]]+v[i]);
-			}
-		}
-	}
-
-	cout << dp[n][W] << endl;
 
     return EXIT_SUCCESS;
 }
