@@ -6,9 +6,11 @@
 #include <iomanip>
 #include <queue>
 #include <map>
+#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
+#include <fstream>
 
 using namespace std;
 
@@ -34,70 +36,119 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-constexpr int mod = 1000000007;
-class mint
-{
+const int mod = 1000000007;
+class mint {
 public:
     long long x;
-    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
-    constexpr mint &operator+=(const mint &a)
-    {
-        if ((x += a.x) >= mod)
-            x -= mod;
+    mint(long long x=0) : x((x%mod+mod)%mod) {}
+    mint operator-() const { 
+      return mint(-x);
+    }
+    mint& operator+=(const mint& a) {
+        if ((x += a.x) >= mod) x -= mod;
         return *this;
+    }
+    mint& operator-=(const mint& a) {
+        if ((x += mod-a.x) >= mod) x -= mod;
+        return *this;
+    }
+    mint& operator*=(const  mint& a) {
+        (x *= a.x) %= mod;
+        return *this;
+    }
+    mint operator+(const mint& a) const {
+        mint res(*this);
+        return res+=a;
+    }
+    mint operator-(const mint& a) const {
+        mint res(*this);
+        return res-=a;
+    }
+    mint operator*(const mint& a) const {
+        mint res(*this);
+        return res*=a;
+    }
+    mint pow(ll t) const {
+        if (!t) return 1;
+        mint a = pow(t>>1);
+        a *= a;
+        if (t&1) a *= *this;
+        return a;
+    }
+    // for prime mod
+    mint inv() const {
+        return pow(mod-2);
+    }
+    mint& operator/=(const mint& a) {
+        return (*this) *= a.inv();
+    }
+    mint operator/(const mint& a) const {
+        mint res(*this);
+        return res/=a;
+    }
+
+    friend ostream& operator<<(ostream& os, const mint& m){
+        os << m.x;
+        return os;
     }
 };
 
 int main()
 {
-    int N, M;
-    cin >> N >> M;
-    vvi G(N);
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-    // グラフの読み込み(標準入力)
-    rep(i, M)
-    {
-        int A, B;
-        cin >> A >> B;
-        G[A - 1].push_back(B - 1);
-        G[B - 1].push_back(A - 1);
+    int n, m;
+    cin >> n >> m;
+    vvi to(n);
+    rep(i,m){
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        to[a].push_back(b);
+        to[b].push_back(a);
     }
 
-    const int INF = INT_MAX;
-
-    vi dist(N, INF);
+    const int INF = 1001001001;
+    vi dist(n,INF);
     queue<int> q;
     q.push(0);
     dist[0] = 0;
-    vi vs;           // キューで取り出された経路を格納していく
-    while (q.size()) // キューに値がある間ループする
-    {
-        int v = q.front();
+
+    vi vs;
+    while(q.size()){
+        int v =q.front();
         q.pop();
+        // qで取り出された順序をvsに格納していく
         vs.push_back(v);
-        for (int u : G[v])
-        {
-            if (dist[u] != INF) // 深さが付いている場合はスキップ
+        // 隣接する頂点を全部見る
+        for(int u: to[v]){
+            // 訪問済みならスキップ
+            if(dist[u]!=INF){
                 continue;
-            dist[u] = dist[v] + 1; // 深さを+1
-            q.push(u);             // キューを吐き出す
+            }
+            // vからの距離を1追加
+            dist[u] = dist[v]+1;
+            //　qに隣接するノードを入れる
+            q.push(u);
         }
     }
 
-    // 距離が1の経路のみを数え上げていく
-    vector<mint> dp(N);
+
+    vector<mint> dp(n);
     dp[0] = 1;
-    for (int v : vs)
-    {
-        for (int u : G[v])
-        {
-            if (dist[u] == dist[v] + 1)
-            {
-                dp[u] += dp[v];
+    for(int v: vs){
+        for(int u: to[v]){
+            if(dist[u]==dist[v]+1){
+                dp[u] = dp[u]+dp[v];
             }
         }
     }
-    mint ans = dp[N - 1];
+
+    mint ans = dp[n-1];
     cout << ans.x << endl;
 
     return EXIT_SUCCESS;
