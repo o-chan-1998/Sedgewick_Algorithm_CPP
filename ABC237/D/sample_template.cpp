@@ -43,30 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    int n;
-    cin >> n;
-    string s;
-    cin >> s;
-    deque<int> ans = {n};
-    // 降順ループ
-    drep(i,n){
-        // Lならキュー
-        if(s[i]=='L'){
-            ans.push_back(i);
-        }else{
-            ans.push_front(i);
-        }
-    }
-    rep(i,n+1){
-        cout << ans.front() << ' ';
-        ans.pop_front();
-    }
-    cout << endl;
-    rep(i,n+1){
-        cout << ans.back() << ' ';
-        ans.pop_back();
-    }
-    cout << endl;
 
     return EXIT_SUCCESS;
 }
