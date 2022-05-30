@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,45 +34,33 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-#define INF 1LL<<60
+#define LINF (1LL<<60)
 
 int n, W;
-// [品物の数][価値✕品物の数]
 ll dp[110][110000];
 ll w[110], v[110];
-
-int main()
-{
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
-	cin >> n >> W;
-	rep1(i,n){
-		cin >> w[i] >> v[i];
-	}
-	rep1(i,110000-1){
-		dp[0][i] = INF;
-	}
-
-	rep1(i,n){
-		rep(j,110000){
-			dp[i][j] = dp[i-1][j];
-			if(j-v[i]>=0){
-				dp[i][j] = min(dp[i][j], dp[i-1][j-v[i]]+w[i]);
-			}
-		}
-	}
-
-	int ans = 0;
-	rep(v, 110000){
-		if(dp[n][v]<=W){
-			ans = max(ans, v);
-		}
-	}
-
-	cout << ans << endl;
-
-    return EXIT_SUCCESS;
+ 
+int main(){
+    cin >> n >> W;
+    for(int i = 1;i <= n;i++)cin >> w[i] >> v[i];
+    for(int j = 1;j < 110000;j++){
+        dp[0][j] = LINF;
+    }
+    for(int i = 1;i <= n;i++){
+        for(int j = 0;j < 110000;j++){
+            dp[i][j] = dp[i-1][j];
+            if(j-v[i] >= 0){
+                dp[i][j] = min(dp[i][j], dp[i-1][j-v[i]] + w[i]);
+            }
+        }
+    }
+    int ans = 0;
+    for(int v = 0;v < 110000;v++){
+        if(dp[n][v] <= W){
+            ans = max(ans, v);
+        }
+    }
+    cout << ans << endl;
+    
+    return 0;
 }
