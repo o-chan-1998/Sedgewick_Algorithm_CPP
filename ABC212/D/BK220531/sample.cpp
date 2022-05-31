@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,35 +34,43 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+};
+
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
     int Q;
     cin >> Q;
 
-    priority_queue<ll, vl, greater<ll>> q;
-    ll s=0;
+    // ヒープキューの用意
+    priority_queue<ll, vll, greater<ll>> que;
+    // 加算要素用意
+    ll S=0;
 
-    // キューの読み込み
-    rep(qi,Q){
-        int type;
-        cin >> type;
-        // typeが3なら解答表示
-        if(type==3){
-            ll ans = q.top(); q.pop();
-            ans += s;
-            cout << ans << endl;
+    rep1(i,Q){
+        int P;
+        cin >> P;
+        if(P==3){
+            cout << que.top()+S << endl;
+            que.pop();  // 取り出したものは捨てる
         }else{
-            int x;
-            cin >> x;
-            if(type==1){
-                q.push(x-s);
+            int X;
+            cin >> X;
+            if(P==1){
+                que.push(X-S);
             }else{
-                s += x;
+                S += X;
             }
         }
     }

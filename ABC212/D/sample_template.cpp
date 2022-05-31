@@ -43,31 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    int Q;
-    cin >> Q;
-
-    priority_queue<ll, vl, greater<ll>> q;
-    ll s=0;
-
-    // キューの読み込み
-    rep(qi,Q){
-        int type;
-        cin >> type;
-        // typeが3なら解答表示
-        if(type==3){
-            ll ans = q.top(); q.pop();
-            ans += s;
-            cout << ans << endl;
-        }else{
-            int x;
-            cin >> x;
-            if(type==1){
-                q.push(x-s);
-            }else{
-                s += x;
-            }
-        }
-    }
 
     return EXIT_SUCCESS;
 }
