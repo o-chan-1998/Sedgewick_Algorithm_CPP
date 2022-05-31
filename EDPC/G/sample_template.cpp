@@ -36,25 +36,6 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-int n,m,u,v;
-vi edge[110000];
-
-int memo[110000];
-bool done[110000];
-
-int dp(int v){
-    if(done[v]){
-        return memo[v];
-    }
-    int ans=0;
-    for(int to:edge[v]){
-        ans = max(ans, dp(to)+1);
-    }
-    done[v]=true;
-    memo[v]=ans;
-    return ans;
-}
-
 int main()
 {
 	// IO高速化のおまじない
@@ -62,16 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    cin >> n >> m;
-    rep(i,m){
-        cin >> u >> v;
-        edge[u].push_back(v);
-    }
-    int ans=0;
-    rep1(v,n){
-        ans = max(ans, dp(v));
-    }
-    cout << ans << endl;
 
     return EXIT_SUCCESS;
 }
