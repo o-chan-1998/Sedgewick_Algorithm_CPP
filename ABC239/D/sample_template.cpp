@@ -43,34 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	const int MX=205;
-	// 素数表作成
-	vector<bool> prime(MX);
-	for(int i=2; i<MX; i++){
-		prime[i] = true;
-		for(int j=2; j<i; j++){
-			if(i%j==0){
-				prime[j]=false;
-			}
-		}
-	}
-
-	int a,b,c,d;
-	cin >> a >> b >> c >> d;
-	for(int i=a; i<=b;i++){
-		bool win=true;
-		for(int j=c; j<=d; j++){
-			if(prime[i+j]){
-				win = false;
-			}
-		}
-		if(win){
-			cout << "Takahashi" << endl;
-			return EXIT_SUCCESS;
-		}
-	}
-
-	cout << "Aoki" << endl;
 
     return EXIT_SUCCESS;
 }

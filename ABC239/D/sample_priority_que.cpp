@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,41 +34,33 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+constexpr int mod = 1000000007;
+class mint
+{
+public:
+    long long x;
+    constexpr mint(long long x = 0) : x((x % mod + mod) % mod) {}
+    constexpr mint &operator+=(const mint &a)
+    {
+        if ((x += a.x) >= mod)
+            x -= mod;
+        return *this;
+    }
+};
+
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int a, b, c;
+    cin >> a >> b >> c;
+    
+    priority_queue<int, std::vector<int>, std::greater<int>> q;
+    q.push(a);
+    q.push(b);
+    q.push(c);
 
-	const int MX=205;
-	// 素数表作成
-	vector<bool> prime(MX);
-	for(int i=2; i<MX; i++){
-		prime[i] = true;
-		for(int j=2; j<i; j++){
-			if(i%j==0){
-				prime[j]=false;
-			}
-		}
-	}
-
-	int a,b,c,d;
-	cin >> a >> b >> c >> d;
-	for(int i=a; i<=b;i++){
-		bool win=true;
-		for(int j=c; j<=d; j++){
-			if(prime[i+j]){
-				win = false;
-			}
-		}
-		if(win){
-			cout << "Takahashi" << endl;
-			return EXIT_SUCCESS;
-		}
-	}
-
-	cout << "Aoki" << endl;
-
+    while(!q.empty()){
+        cout << q.top() << endl;
+        q.pop();
+    }
     return EXIT_SUCCESS;
 }
