@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -37,44 +35,35 @@ using vll = vc<ll>;
 using vvll = vv<ll>;
 
 #define MOD 1000000007
+
 int h, w;
 string field[1100];
 ll dp[1100][1100];
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
     cin >> h >> w;
-    rep(i,h){
+    for (int i = 0; i < h; i++)
         cin >> field[i];
-    }
 
-    dp[h-1][w-1] = 1;
+    dp[h - 1][w - 1] = 1;
 
-    drep(i,h){
-        drep(j,w){
-            if(i==h-1 && j==w-1){
+    for (int i = h - 1; i >= 0; i--)
+    {
+        for (int j = w - 1; j >= 0; j--)
+        {
+            if (i == h - 1 && j == w - 1)
                 continue;
-            }
             dp[i][j] = 0;
-            if(i+1 < h){
-                dp[i][j] += dp[i+1][j];
-            }
-            if(j+1 < w){
-                dp[i][j] += dp[i][j+1];
-            }
+            if (i + 1 < h)
+                dp[i][j] += dp[i + 1][j];
+            if (j + 1 < w)
+                dp[i][j] += dp[i][j + 1];
             dp[i][j] %= MOD;
-            if(field[i][j] == '#'){
+            if (field[i][j] == '#')
                 dp[i][j] = 0;
-            }
         }
     }
-
     cout << dp[0][0] << endl;
-
-    return EXIT_SUCCESS;
+    return 0;
 }
