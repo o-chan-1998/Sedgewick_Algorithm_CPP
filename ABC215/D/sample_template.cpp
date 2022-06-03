@@ -43,56 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	// n : 正整数列Aの数
-	// m : 条件となる値の上限
-	int n, m;
-	cin >> n >> m;
-	const int L=100001L;
-	vector<bool> x(L);
-	rep(i,n){
-		int a;
-		cin >> a;
-		x[a] = true;
-	}
-
-	vi d;
-	// 約数判定;
-	for(int i=2;i<L;i++){
-		bool flag=false;
-		for(int j=i; j<L; j+=i){
-			if(x[j]){
-				flag = true;
-			}
-		}
-		if(flag){
-			d.push_back(i);
-		}
-	}
-
-	vector<bool> ok(m+1, true);
-	for(int i:d){
-		for(int j=i;j<=m;j+=i){
-			// 約数の一部である場合はfalseとする
-			ok[j] = false;
-		}
-	}
-
-	// 答えの個数をカウント
-	int cnt=0;
-	rep1(i,m){
-		if(ok[i]){
-			cnt++;
-		}
-	}
-
-	cout << cnt << endl;
-
-	// 答えとなる値を出力
-	rep1(i,m){
-		if(ok[i]){
-			cout << i << endl;
-		}
-	}
 
     return EXIT_SUCCESS;
 }

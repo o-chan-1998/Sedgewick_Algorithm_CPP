@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -38,61 +36,53 @@ using vvll = vv<ll>;
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
-	// n : 正整数列Aの数
-	// m : 条件となる値の上限
 	int n, m;
 	cin >> n >> m;
-	const int L=100001L;
-	vector<bool> x(L);
-	rep(i,n){
+	const int L = 100001;
+	vector<bool> x(L);	// 解答候補の配列
+
+	// 与えられた値の要素をtrueにする（素因数分解する数字）
+	rep(i, n)
+	{
 		int a;
 		cin >> a;
 		x[a] = true;
 	}
 
 	vi d;
-	// 約数判定;
-	for(int i=2;i<L;i++){
-		bool flag=false;
-		for(int j=i; j<L; j+=i){
-			if(x[j]){
+	
+	// 与えられた値a_iを素因数分解
+	for (int i = 2; i < L; i++)
+	{
+		bool flag = false;
+		for (int j = i; j < L; j += i)
+		{
+			if (x[j])
 				flag = true;
-			}
 		}
-		if(flag){
+		if (flag)
 			d.push_back(i);
-		}
 	}
 
-	vector<bool> ok(m+1, true);
-	for(int i:d){
-		for(int j=i;j<=m;j+=i){
-			// 約数の一部である場合はfalseとする
+	vector<bool> ok(m + 1, true);
+	// 与えられた素因数の倍数をfalseにする
+	for (int i : d)
+	{
+		for (int j = i; j <= m; j += i)
+		{
 			ok[j] = false;
 		}
 	}
 
-	// 答えの個数をカウント
-	int cnt=0;
-	rep1(i,m){
-		if(ok[i]){
+	int cnt = 0;
+	// 素因数の倍数"以外"(true)をカウント
+	for (int i = 1; i <= m; ++i)
+		if (ok[i])
 			cnt++;
-		}
-	}
-
 	cout << cnt << endl;
-
-	// 答えとなる値を出力
-	rep1(i,m){
-		if(ok[i]){
+	// trueを前から順に表示
+	for (int i = 1; i <= m; ++i)
+		if (ok[i])
 			cout << i << endl;
-		}
-	}
-
-    return EXIT_SUCCESS;
+	return 0;
 }
