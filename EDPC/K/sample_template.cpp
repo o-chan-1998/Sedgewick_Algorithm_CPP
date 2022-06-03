@@ -36,11 +36,6 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-ll n,k;
-ll a[110];
-// 山がdp[i]個の状態のときに、先手が勝つか？
-ll dp[110000];
-
 int main()
 {
 	// IO高速化のおまじない
@@ -48,29 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-    cin >> n >> k;
-    rep(i,n){
-        // xxx
-        cin >> a[i];
-    }
-
-    rep(i,k+1){
-        // 先手が負けるとして初期化
-        dp[i]=false;
-        rep(j,n){
-            if(i-a[j]>=0){
-                // 先手が勝っているか、a[j]前に負けていない。
-                // ここは理解が足りていない。
-                dp[i] = dp[i] | !dp[i-a[j]];
-            }
-        }
-    }
-
-    if(dp[k]){
-        cout << "First" << endl;
-    }else{
-        cout << "Second" << endl;
-    }
 
     return EXIT_SUCCESS;
 }

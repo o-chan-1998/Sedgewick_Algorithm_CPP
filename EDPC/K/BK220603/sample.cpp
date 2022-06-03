@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,41 +34,40 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-ll n,k;
-ll a[110];
-// 山がdp[i]個の状態のときに、先手が勝つか？
-ll dp[110000];
+bool dp[110000];
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
+    int n, k;
     cin >> n >> k;
+
+    vi a(k);
+
+    rep(i,k+1){
+        dp[i] = 1;
+    }
+
     rep(i,n){
-        // xxx
         cin >> a[i];
     }
 
-    rep(i,k+1){
-        // 先手が負けるとして初期化
-        dp[i]=false;
+    rep1(i,k){
         rep(j,n){
-            if(i-a[j]>=0){
-                // 先手が勝っているか、a[j]前に負けていない。
-                // ここは理解が足りていない。
-                dp[i] = dp[i] | !dp[i-a[j]];
+            if(i-a[j]<0){
+                continue;
+            }
+            if(dp[i-a[j]]==1){
+                dp[i] = 0;
             }
         }
     }
 
     if(dp[k]){
-        cout << "First" << endl;
-    }else{
         cout << "Second" << endl;
+    }else{
+        cout << "First" << endl;
     }
+
 
     return EXIT_SUCCESS;
 }
