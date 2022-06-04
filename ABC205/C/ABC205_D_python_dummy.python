@@ -1,0 +1,32 @@
+A, B, C = map(int, input().split())
+ans_list = ['>', '<', '=']
+ans = 2
+if 0 <= A and 0 <= B:
+    if A < B:
+        ans = 1
+    elif B < A:
+        ans = 0
+    else:
+        ans = 2
+else:
+    if C % 2 != 0:
+        if A < 0 and B < 0:
+            if A < B:
+                ans = 1
+            elif B < A:
+                ans = 0
+            else:
+                ans = 2
+        else:
+            if A < 0:
+                ans = 1
+            elif B < 0:
+                ans = 0
+    else:
+        if abs(A) < abs(B):
+            ans = 1
+        elif abs(B) < abs(A):
+            ans = 0
+        else:
+            ans = 2
+print(ans_list[ans])
