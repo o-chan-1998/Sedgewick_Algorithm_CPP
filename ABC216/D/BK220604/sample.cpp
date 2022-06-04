@@ -6,11 +6,9 @@
 #include <iomanip>
 #include <queue>
 #include <map>
-#include <set>
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -38,75 +36,58 @@ using vvll = vv<ll>;
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
-	// n : 2n個のボール
-	// m : 筒の本数
-	int n,m;
+	int n, m;
 	cin >> n >> m;
-	vvi a(m);
-	vvi pos(n);
-
-	rep(i,m){
+	vector<vector<int>> a(m);
+	vector<vector<int>> pos(n);
+	rep(i, m)
+	{
 		int k;
 		cin >> k;
-		a[i] = vi(k);
-		rep(j,k){
-			// i番目の筒にk個値を標準入力
+		a[i] = vector<int>(k);
+		rep(j, k) {
 			cin >> a[i][j];
 		}
-		rep(j,k){
-			// indexの調整
+		rep(j, k)
+		{
 			a[i][j]--;
-			// i番目の筒のj番目に入っている値をpushする
 			pos[a[i][j]].push_back(i);
 		}
 	}
-
-	vi cnt(n);
+	vector<int> cnt(n);
 	queue<int> q;
-	// i番目の筒の一番最後の数値のカウンターを作る
-	rep(i,m){
+	rep(i, m)
+	{
 		int t = a[i].back();
 		cnt[t]++;
 	}
-
-	rep(i,n){
-		// カウンターが2の場合、キューに入れる
-		if(cnt[i]==2){
+	rep(i, n) {	// 同じ色は2つであると問題文で保証されている
+		if (cnt[i] == 2) {
 			q.push(i);
 		}
 	}
-
 	int take = 0;
-	// キューに値がある間中ループする
-	while(q.size()){
+	while (q.size())
+	{
 		int x = q.front();
 		q.pop();
 		take++;
-		// 取り出し場合は2つ分なので、rep(i,2)
-		rep(i,2){
+		rep(i, 2)
+		{
 			int p = pos[x][i];
 			a[p].pop_back();
-			if(a[p].size()){
+			if (a[p].size())
+			{
 				int t = a[p].back();
 				cnt[t]++;
-				if(cnt[t]==2){
+				if (cnt[t] == 2)
 					q.push(t);
-				}
 			}
 		}
 	}
-
-	// n個取り出せた場合は成功
-	if(take==n){
+	if (take == n)
 		cout << "Yes" << endl;
-	}else{
+	else
 		cout << "No" << endl;
-	}
-
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
