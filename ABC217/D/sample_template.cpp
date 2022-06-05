@@ -43,27 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	int L,q;
-	cin >> L >> q;
-	set<int> s;
-	s.insert(0);
-	s.insert(L);
-
-	rep(qi,q){
-		int c,x;
-		cin >> c >> x;
-		if(c==1){
-			s.insert(x);
-		}else{
-			// x以上で最も小さい場所(ポインタ)
-			auto it = s.lower_bound(x);
-			int r = *it;
-			it--;
-			int l = *it;
-			int ans = r-l;
-			cout << ans << endl;
-		}
-	}
 
     return EXIT_SUCCESS;
 }

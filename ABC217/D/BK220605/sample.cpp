@@ -10,7 +10,6 @@
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -38,32 +37,28 @@ using vvll = vv<ll>;
 
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
-
-	int L,q;
+	int L, q;
 	cin >> L >> q;
 	set<int> s;
 	s.insert(0);
 	s.insert(L);
-
-	rep(qi,q){
-		int c,x;
+	rep(qi, q)
+	{
+		int c, x;
 		cin >> c >> x;
-		if(c==1){
+		if (c == 1)
+		{
 			s.insert(x);
-		}else{
-			// x以上で最も小さい場所(ポインタ)
+		}
+		else
+		{
 			auto it = s.lower_bound(x);
 			int r = *it;
 			it--;
 			int l = *it;
-			int ans = r-l;
+			int ans = r - l;
 			cout << ans << endl;
 		}
 	}
-
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
