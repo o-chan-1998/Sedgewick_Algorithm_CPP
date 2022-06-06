@@ -43,38 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	int n;
-	cin >> n;
-	vi x(n), y(n);
-	rep(i,n){
-		cin >> x[i] >> y[i];
-	}
 
-	set<pair<int,int>> s;
-	rep(i,n){
-		s.emplace(x[i],y[i]);
-	}
-
-	int ans=0;
-	rep(i,n){
-		rep(j,n){
-			int xi=x[i],xj=x[j];
-			int yi=y[i],yj=y[j];
-			if(xi < xj && yi < yj){
-				// 対角の対になる座標がない場合は、スキップする
-				if(s.find(pair<int,int>(xi,yj))==s.end()){
-					continue;
-				}
-				// 対角の対になる座標がない場合は、スキップする
-				if(s.find(pair<int,int>(xj,yi))==s.end()){
-					continue;
-				}
-				ans++;
-			}
-		}
-	}
-
-	cout << ans << endl;
-	
     return EXIT_SUCCESS;
 }

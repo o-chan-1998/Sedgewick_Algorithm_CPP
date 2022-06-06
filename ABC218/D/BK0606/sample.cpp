@@ -10,7 +10,6 @@
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,45 +35,25 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-int main()
-{
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+using P = pair<int,int>;
 
-	int n;
-	cin >> n;
-	vi x(n), y(n);
-	rep(i,n){
-		cin >> x[i] >> y[i];
-	}
-
-	set<pair<int,int>> s;
-	rep(i,n){
-		s.emplace(x[i],y[i]);
-	}
-
-	int ans=0;
-	rep(i,n){
-		rep(j,n){
-			int xi=x[i],xj=x[j];
-			int yi=y[i],yj=y[j];
-			if(xi < xj && yi < yj){
-				// 対角の対になる座標がない場合は、スキップする
-				if(s.find(pair<int,int>(xi,yj))==s.end()){
-					continue;
-				}
-				// 対角の対になる座標がない場合は、スキップする
-				if(s.find(pair<int,int>(xj,yi))==s.end()){
-					continue;
-				}
-				ans++;
-			}
-		}
-	}
-
-	cout << ans << endl;
-	
-    return EXIT_SUCCESS;
+int main() {
+  int n;
+  cin >> n;
+  vector<int> x(n), y(n);
+  rep(i,n) cin >> x[i] >> y[i];
+  set<P> s;
+  rep(i,n) s.emplace(x[i],y[i]);
+  int ans = 0;
+  rep(i,n)rep(j,n) {
+    int xi = x[i], xj = x[j];	// 対角点１を設定
+    int yi = y[i], yj = y[j];	// 対角点２を設定
+    if (xi < xj && yi < yj) {
+      if (s.find(P(xi,yj)) == s.end()) continue;	// 対角点１のY座標が異なる位置情報があるか否か
+      if (s.find(P(xj,yi)) == s.end()) continue;	// 対角点２のY座標が異なる位置情報があるか否か
+      ++ans;
+    }
+  }
+  cout << ans << endl;
+  return 0;
 }
