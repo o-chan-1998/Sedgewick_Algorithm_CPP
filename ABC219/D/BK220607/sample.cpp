@@ -10,7 +10,6 @@
 #include <climits>
 #include <bitset>
 #include <numeric> // iota関数
-#include <fstream>
 
 using namespace std;
 
@@ -36,39 +35,28 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-int main()
-{
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+void chmin(int& x, int y) { x = min(x,y);}
 
-	// n : 弁当の種類, x : 食べたいたこ焼きの個数, y : 食べたいたい焼きの個数
-	int n,x,y;
-	cin >> n >> x >> y;
-	const int INF =1001001001;
+int main() {
+  int n, x, y;
+  cin >> n >> x >> y;
+  const int INF = 1001001001;
+  vvi dp(x+1, vi(y+1, INF));
+  dp[0][0] = 0;
+  rep(i,n) {
+    int a, b;
+    cin >> a >> b;
 
-	// たこ焼きj個、たい焼きk個になるように取った時の弁当の最小値
-	vvi dp(x+1, vi(y+1,INF));
+    vvi p(x+1, vi(y+1, INF));
+    swap(dp,p);
+    rep(j,x+1)rep(k,y+1) {
+      chmin(dp[j][k], p[j][k]);
+      chmin(dp[min(j+a,x)][min(k+b,y)], p[j][k]+1);
+    }
+  }
 
-	dp[0][0]=0;
-
-	rep(i,n){
-		// 各種弁当に入っているたこ焼きの個数(a)とたい焼きの個数(b)
-		int a,b;
-		cin >> a >> b;
-		drep(j,x+1){
-			drep(k,y+1){
-				dp[min(j+a,x)][min(k+b,y)]=min(dp[min(j+a,x)][min(k+b,y)],dp[j][k]+1);
-			}
-		}
-	}
-
-	int ans = dp[x][y];
-	if(ans==INF){
-		ans = -1;
-	}
-	cout << ans << endl;
-
-    return EXIT_SUCCESS;
+  int ans = dp[x][y];
+  if (ans == INF) ans = -1;
+  cout << ans << endl;
+  return 0;
 }

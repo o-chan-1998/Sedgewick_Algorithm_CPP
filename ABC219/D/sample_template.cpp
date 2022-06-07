@@ -43,32 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	// n : 弁当の種類, x : 食べたいたこ焼きの個数, y : 食べたいたい焼きの個数
-	int n,x,y;
-	cin >> n >> x >> y;
-	const int INF =1001001001;
-
-	// たこ焼きj個、たい焼きk個になるように取った時の弁当の最小値
-	vvi dp(x+1, vi(y+1,INF));
-
-	dp[0][0]=0;
-
-	rep(i,n){
-		// 各種弁当に入っているたこ焼きの個数(a)とたい焼きの個数(b)
-		int a,b;
-		cin >> a >> b;
-		drep(j,x+1){
-			drep(k,y+1){
-				dp[min(j+a,x)][min(k+b,y)]=min(dp[min(j+a,x)][min(k+b,y)],dp[j][k]+1);
-			}
-		}
-	}
-
-	int ans = dp[x][y];
-	if(ans==INF){
-		ans = -1;
-	}
-	cout << ans << endl;
 
     return EXIT_SUCCESS;
 }
