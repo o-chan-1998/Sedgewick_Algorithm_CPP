@@ -37,213 +37,93 @@ using vll = vc<ll>;
 using vvll = vv<ll>;
 
 const int mod = 998244353;
-class mint
-{
-  long long x;
-
+class mint {
 public:
-  mint(long long x = 0) : x((x % mod + mod) % mod) {}
-  mint operator-() const
-  {
-    return mint(-x);
-  }
-  mint &operator+=(const mint &a)
-  {
-    if ((x += a.x) >= mod)
-      x -= mod;
-    return *this;
-  }
-  mint &operator-=(const mint &a)
-  {
-    if ((x += mod - a.x) >= mod)
-      x -= mod;
-    return *this;
-  }
-  mint &operator*=(const mint &a)
-  {
-    (x *= a.x) %= mod;
-    return *this;
-  }
-  mint operator+(const mint &a) const
-  {
-    mint res(*this);
-    return res += a;
-  }
-  mint operator-(const mint &a) const
-  {
-    mint res(*this);
-    return res -= a;
-  }
-  mint operator*(const mint &a) const
-  {
-    mint res(*this);
-    return res *= a;
-  }
-  mint pow(ll t) const
-  {
-    if (!t)
-      return 1;
-    mint a = pow(t >> 1);
-    a *= a;
-    if (t & 1)
-      a *= *this;
-    return a;
-  }
-  // for prime mod
-  mint inv() const
-  {
-    return pow(mod - 2);
-  }
-  mint &operator/=(const mint &a)
-  {
-    return (*this) *= a.inv();
-  }
-  mint operator/(const mint &a) const
-  {
-    mint res(*this);
-    return res /= a;
-  }
+    long long x;
+    mint(long long x=0) : x((x%mod+mod)%mod) {}
+    mint operator-() const { 
+      return mint(-x);
+    }
+    mint& operator+=(const mint& a) {
+        if ((x += a.x) >= mod) x -= mod;
+        return *this;
+    }
+    mint& operator-=(const mint& a) {
+        if ((x += mod-a.x) >= mod) x -= mod;
+        return *this;
+    }
+    mint& operator*=(const  mint& a) {
+        (x *= a.x) %= mod;
+        return *this;
+    }
+    mint operator+(const mint& a) const {
+        mint res(*this);
+        return res+=a;
+    }
+    mint operator-(const mint& a) const {
+        mint res(*this);
+        return res-=a;
+    }
+    mint operator*(const mint& a) const {
+        mint res(*this);
+        return res*=a;
+    }
+    mint pow(ll t) const {
+        if (!t) return 1;
+        mint a = pow(t>>1);
+        a *= a;
+        if (t&1) a *= *this;
+        return a;
+    }
+    // for prime mod
+    mint inv() const {
+        return pow(mod-2);
+    }
+    mint& operator/=(const mint& a) {
+        return (*this) *= a.inv();
+    }
+    mint operator/(const mint& a) const {
+        mint res(*this);
+        return res/=a;
+    }
 
-  friend ostream &operator<<(ostream &os, const mint &m)
-  {
-    os << m.x;
-    return os;
-  }
+    friend ostream& operator<<(ostream& os, const mint& m){
+        os << m.x;
+        return os;
+    }
 };
 
 int main()
 {
-  // https://programming.pc-note.net/cpp/filestream.html
-  // ファイル出力
-  const char *fileName = "trace.txt";
-  ofstream ofs(fileName);
-  if (!ofs)
-  {
-      cout << "ファイルが開けませんでした。" << endl;
-      cin.get();
-      return 0;
-  }
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-  int n;
-  cin >> n;
-  vector<int> a(n);
-  rep(i, n) {
-    cin >> a[i];
-    ofs << a[i] << " "; // ★デバッグ★
-  }
-  ofs << endl;  // ★デバッグ★
+	int n;
+	cin >> n;
+	vi a(n);
+	rep(i,n){
+		cin >> a[i];
+	}
 
-  vector<mint> dp(10);
-  dp[a[0]] = 1;
-  ofs << "a[0] : " << a[0] << endl; // ★デバッグ★
-  ofs << "dp[" << a[0] << "] : " << dp[a[0]] << endl; // ★デバッグ★
+	// i個目まで操作して、先頭がjの場合の数
+	vector<mint> dp(10);
+	dp[a[0]] = 1;
+	rep1(i,n-1){
+		int na=a[i];
+		vector<mint> p(10);
+		// 一個前のdpがpになる。
+		swap(p, dp);
+		rep(j,10){
+			dp[(j+na)%10] += p[j];
+			dp[(j*na)%10] += p[j];
+		}
+	}
 
-  rep1(i,n-1)
-  {
-    int na = a[i];
-    ofs << "(" << i << ")" << endl; // ★デバッグ★
-    ofs << "na : " << na << "(na=a[i])" << endl;
+	rep(i,10){
+		cout << dp[i].x << endl;
+	}
 
-    // デバッグ中
-    ofs << "【dp】" << endl;
-    rep(i,10){
-      ofs << i << "\t";
-    }
-    ofs << endl;
-    rep(i,10){
-      ofs << dp[i] << "\t";
-    }
-    ofs << endl;
-
-    vector<mint> p(10);
-    ofs << "【p】" << endl;
-    rep(i,10){
-      ofs << i << "\t";
-    }
-    ofs << endl;
-    rep(i,10){
-      ofs << p[i] << "\t";
-    }
-    ofs << endl;
-
-    swap(p, dp);
-
-    ofs << " ----- swap(p,dp)後 ----- " << endl;
-    ofs << "【dp】" << endl;
-    rep(i,10){
-      ofs << i << "\t";
-    }
-    ofs << endl;
-    rep(i,10){
-      ofs << dp[i] << "\t";
-    }
-    ofs << endl;
-
-    ofs << "【p】" << endl;
-    rep(i,10){
-      ofs << i << "\t";
-    }
-    ofs << endl;
-    rep(i,10){
-      ofs << p[i] << "\t";
-    }
-    ofs << endl;
-
-    rep(j, 10)
-    {
-      dp[(j + na) % 10] += p[j];
-      ofs << "(j : " << j << ")" << endl;
-      ofs << "dp[(j + na) % 10] += p[j]" << endl;
-      ofs << "dp[(" << j << " + " << na << ") % 10] += " << "p[" << j << "]" << endl;
-      ofs << "dp[" << (j + na) << " % 10] += " << "dp[" << j << "]" << endl;
-      ofs << "【dp】" << endl;
-      rep(i,10){
-        ofs << i << "\t";
-      }
-      ofs << endl;
-      rep(i,10){
-        ofs << dp[i] << "\t";
-      }
-      ofs << endl;
-      ofs << "【p】" << endl;
-      rep(i,10){
-        ofs << i << "\t";
-      }
-      ofs << endl;
-      rep(i,10){
-        ofs << p[i] << "\t";
-      }
-      ofs << endl;
-      ofs << "---" << endl;
-
-      dp[(j * na) % 10] += p[j];
-      ofs << "dp[(j * na) % 10] += p[j]" << endl;
-      ofs << "dp[(" << j << " * " << na << ") % 10] += " << "p[" << j << "]" << endl;
-      ofs << "dp[" << (j * na) << " % 10] += " << "dp[" << j << "]" << endl;
-      ofs << "【dp】" << endl;
-      rep(i,10){
-        ofs << i << "\t";
-      }
-      ofs << endl;
-      rep(i,10){
-        ofs << dp[i] << "\t";
-      }
-      ofs << endl;
-      ofs << "【p】" << endl;
-      rep(i,10){
-        ofs << i << "\t";
-      }
-      ofs << endl;
-      rep(i,10){
-        ofs << p[i] << "\t";
-      }
-      ofs << endl;
-      ofs << "===" << endl;
-    }
-  }
-  rep(i, 10) cout << dp[i] << endl;
-
-  ofs.close();
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
