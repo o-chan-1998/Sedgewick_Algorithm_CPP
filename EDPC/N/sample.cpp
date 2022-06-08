@@ -41,6 +41,8 @@ ll dp[440][440];
 ll a[440];
 ll n;
 
+#define LINF (1LL<<60)
+
 int main()
 {
 	// IO高速化のおまじない
