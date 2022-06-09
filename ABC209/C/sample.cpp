@@ -36,14 +36,29 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+#define MOD 1000000007
+
 int main()
 {
-	// IO高速化のおまじない
-    ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+    int n;
+    cin >> n;
+    vll c(n);
+    rep(i,n){
+        cin >> c[i];
+    }
+    sort(c.begin(),c.end());
 
-    
+    ll ans = 1;
+
+    rep(i,n){
+        if(c[i]-i==0){
+            cout << 0 << endl;
+            return EXIT_SUCCESS;
+        }
+        ans *= c[i]-i;
+        ans %= MOD;
+    }
+    cout << ans << endl;
 
     return EXIT_SUCCESS;
 }
