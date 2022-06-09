@@ -1,0 +1,25 @@
+{
+	"files.associations": {
+		"*.tcc": "cpp",
+		"bitset": "cpp",
+		"cmath": "cpp",
+		"cstdio": "cpp",
+		"vector": "cpp",
+		"exception": "cpp",
+		"algorithm": "cpp",
+		"map": "cpp",
+		"memory_resource": "cpp",
+		"numeric": "cpp",
+		"random": "cpp",
+		"set": "cpp",
+		"utility": "cpp",
+		"fstream": "cpp",
+		"iomanip": "cpp",
+		"iosfwd": "cpp",
+		"iostream": "cpp",
+		"istream": "cpp",
+		"ostream": "cpp",
+		"streambuf": "cpp",
+		"type_traits": "cpp"
+	}
+}
