@@ -37,147 +37,98 @@ using vll = vc<ll>;
 using vvll = vv<ll>;
 
 const int mod = 998244353;
-class mint
-{
-  long long x;
-
+class mint {
 public:
-  mint(long long x = 0) : x((x % mod + mod) % mod) {}
-  mint operator-() const
-  {
-    return mint(-x);
-  }
-  mint &operator+=(const mint &a)
-  {
-    if ((x += a.x) >= mod)
-      x -= mod;
-    return *this;
-  }
-  mint &operator-=(const mint &a)
-  {
-    if ((x += mod - a.x) >= mod)
-      x -= mod;
-    return *this;
-  }
-  mint &operator*=(const mint &a)
-  {
-    (x *= a.x) %= mod;
-    return *this;
-  }
-  mint operator+(const mint &a) const
-  {
-    mint res(*this);
-    return res += a;
-  }
-  mint operator-(const mint &a) const
-  {
-    mint res(*this);
-    return res -= a;
-  }
-  mint operator*(const mint &a) const
-  {
-    mint res(*this);
-    return res *= a;
-  }
-  mint pow(ll t) const
-  {
-    if (!t)
-      return 1;
-    mint a = pow(t >> 1);
-    a *= a;
-    if (t & 1)
-      a *= *this;
-    return a;
-  }
-  // for prime mod
-  mint inv() const
-  {
-    return pow(mod - 2);
-  }
-  mint &operator/=(const mint &a)
-  {
-    return (*this) *= a.inv();
-  }
-  mint operator/(const mint &a) const
-  {
-    mint res(*this);
-    return res /= a;
-  }
+    long long x;
+    mint(long long x=0) : x((x%mod+mod)%mod) {}
+    mint operator-() const { 
+      return mint(-x);
+    }
+    mint& operator+=(const mint& a) {
+        if ((x += a.x) >= mod) x -= mod;
+        return *this;
+    }
+    mint& operator-=(const mint& a) {
+        if ((x += mod-a.x) >= mod) x -= mod;
+        return *this;
+    }
+    mint& operator*=(const  mint& a) {
+        (x *= a.x) %= mod;
+        return *this;
+    }
+    mint operator+(const mint& a) const {
+        mint res(*this);
+        return res+=a;
+    }
+    mint operator-(const mint& a) const {
+        mint res(*this);
+        return res-=a;
+    }
+    mint operator*(const mint& a) const {
+        mint res(*this);
+        return res*=a;
+    }
+    mint pow(ll t) const {
+        if (!t) return 1;
+        mint a = pow(t>>1);
+        a *= a;
+        if (t&1) a *= *this;
+        return a;
+    }
+    // for prime mod
+    mint inv() const {
+        return pow(mod-2);
+    }
+    mint& operator/=(const mint& a) {
+        return (*this) *= a.inv();
+    }
+    mint operator/(const mint& a) const {
+        mint res(*this);
+        return res/=a;
+    }
 
-  friend ostream &operator<<(ostream &os, const mint &m)
-  {
-    os << m.x;
-    return os;
-  }
+    friend ostream& operator<<(ostream& os, const mint& m){
+        os << m.x;
+        return os;
+    }
 };
 
 int main()
 {
-  // ファイル出力
-  const char *fileName = "trace.txt";
-  ofstream ofs(fileName);
-  if (!ofs)
-  {
-    cout << "ファイルが開けませんでした。" << endl;
-    cin.get();
-    return 0;
-  }
-
-  int n;
-  cin >> n;
-  vector<int> a(n), b(n);
-  rep(i, n) cin >> a[i];
-  rep(i, n) cin >> b[i];
-  const int M = 16;
-  vector<mint> dp(M);
-  dp[0] = 1;
-  rep(i, n)
-  {
-    vector<mint> p(M);
-
-    ofs << i << "番目" << endl;
-    rep(i, M)
-            ofs
-        << dp[i] << " ";
-    ofs << endl;
-    rep(i, M)
-            ofs
-        << p[i] << " ";
-    ofs << endl << endl;
-
-    swap(dp, p);
-
-    ofs << "- swap -" << endl;
-    rep(i, M)
-            ofs
-        << dp[i] << " ";
-    ofs << endl;
-    rep(i, M)
-            ofs
-        << p[i] << " ";
-    ofs << endl << endl;
-
-    rep(j, M - 1)
-      p[j + 1] += p[j];
-    rep(i, M)
-            ofs << p[i] << " ";
-    ofs << endl << endl;
-
-    rep(j, M)
-    {
-      if (a[i] <= j && j <= b[i])
-      {
-        dp[j] += p[j];
-      }
-      ofs << dp[j] << " ";
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+    
+    int n;
+    cin >> n;
+    vector<int> a(n), b(n);
+    rep(i,n){
+        cin >> a[i];
     }
-    ofs << endl << endl;
-  }
-  mint ans;
-  rep(i, M) ans += dp[i];
-  cout << ans << endl;
+    rep(i,n){
+        cin >> b[i];
+    }
+    const int M = 3001;
+    vector<mint> dp(M);
+    dp[0] = 1;
+    rep(i,n){
+        vector<mint> p(M);
+        swap(dp,p);
+        rep(j,M-1){
+            p[j+1] += p[j];
+        } 
+        rep(j,M) {
+            if (a[i] <= j && j <= b[i]) {
+                dp[j] += p[j];
+            }
+        }
+    }
+    mint ans;
+    rep(i,M){
+        ans += dp[i];
+    }
+    cout << ans.x << endl;
 
-  ofs.close();
-
-  return 0;
+    return EXIT_SUCCESS;
 }

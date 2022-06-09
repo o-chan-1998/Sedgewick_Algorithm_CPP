@@ -2,8 +2,8 @@
 
 const int mod = 1000000007;
 class mint {
-    long long x;
 public:
+    long long x;
     mint(long long x=0) : x((x%mod+mod)%mod) {}
     mint operator-() const { 
       return mint(-x);
