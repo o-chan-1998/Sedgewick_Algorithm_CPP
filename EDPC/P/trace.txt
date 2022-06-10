@@ -1,0 +1,10 @@
+dfs(int x(3), int last(-1) = -1)
+3と連結する1
+dfs(int x(1), int last(3) = -1)
+1と連結する2
+dfs(int x(2), int last(1) = -1)
+2と連結する1
+1と連結する3
+1と連結する4
+dfs(int x(4), int last(1) = -1)
+4と連結する1
