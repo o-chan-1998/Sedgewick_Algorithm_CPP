@@ -36,42 +36,12 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
-struct frac{
-	ll a, b;
-	frac(ll _a = 0, ll _b = 1) : a(_a), b(_b){
-		// 0除算のときはa=1, b=0を返す
-		if (b == 0){
-			a = 1;
-			return;
-		}
-		// 分母が1以上になるように正規化する
-		if (b < 0){	
-			a = -a;
-			b = -b;
-		}
-		ll g = gcd(abs(a), b);  // g++ -std=c++17 sample.cpp
-		a /= g;
-		b /= g;
-	}
-	bool operator<(const frac &x) const{
-		return a * x.b < x.a * b;
-	}
-};
+int main()
+{
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-int main(){
-	int n;
-	cin >> n;
-	vector<int> x(n), y(n);
-	rep(i, n){
-		cin >> x[i] >> y[i];
-	}
-
-	set<frac> st;
-	rep(i, n){
-		rep(j, i){
-			st.insert(frac(x[i] - x[j], y[i] - y[j]));
-		}
-	}
-	cout << st.size() * 2 << endl;
-	return 0;
+    return EXIT_SUCCESS;
 }
