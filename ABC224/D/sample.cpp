@@ -38,137 +38,77 @@ using vvll = vv<ll>;
 
 int main()
 {
-  // ファイル出力
-  const char *fileName = "trace.txt";
-  ofstream ofs(fileName);
-  if (!ofs)
-  {
-    cout << "ファイルが開けませんでした。" << endl;
-    cin.get();
-    return 0;
-  }
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	int n = 9;
+	// 9 個の頂点と M 本の辺からなる無向グラフ、および、8 つのコマで構成される
+	int m;
+	cin >> m;
+	
+	// 頂点aと頂点bを連結
+	vvi to(n);
+	rep(i, m){
+		int a, b;
+		cin >> a >> b;
+		a--;
+		b--;
+		to[a].push_back(b);
+		to[b].push_back(a);
+	}
 
-  int n = 9;
-  int m;
-  cin >> m;
-  vector<vector<int>> to(n);
-  rep(i, m)
-  {
-    int a, b;
-    cin >> a >> b;
-    --a;
-    --b;
-    to[a].push_back(b);
-    to[b].push_back(a);
-  }
-  vector<int> s(n, -1);
-  rep(i, n - 1)
-  {
-    int p;
-    cin >> p;
-    --p;
-    s[p] = i;
-  }
+	// 駒の置き位置
+	vi s(n, -1);
+	rep(i, n - 1){
+		int p;
+		cin >> p;
+		p--;
+		// 駒pが、i番目に置かれている
+		s[p] = i;
+	}
 
-  rep(i, n)
-          ofs
-      << s[i] << " ";
-  ofs << endl
-      << endl;
+	vi t(n, -1);
+	rep(i, n - 1){
+		t[i] = i;
+	}
 
-  vector<int> t(n, -1);
-  rep(i, n - 1) t[i] = i;
+	// map変数とは、順序あり集合
+	map<vi, int> dist;
+	queue<vi> q;
 
-  rep(i, n)
-          ofs
-      << t[i] << " ";
-  ofs << endl
-      << endl;
+	// 初期盤面
+	dist[s] = 0;
+	q.push(s);
 
-  map<vector<int>, int> dist;
-  queue<vector<int>> q;
+	// 全盤面調査(BFS(幅優先探索)アルゴリズム)
+	while (q.size()){
+		s = q.front();
+		q.pop();
+		int d = dist[s];
+		rep(v, n) {
+			// -1が置かれている駒に対して操作を行う
+			if (s[v] == -1){
+				for (int u : to[v]){
+					swap(s[u], s[v]);
+					// 新しい盤面をキューに追加
+					if (dist.find(s) == dist.end()){
+						dist[s] = d + 1;
+						q.push(s);
+					}
+					swap(s[u], s[v]);
+				}
+			}
+		}
+	}
 
-  dist[s] = 0;
+	// 目標の盤面
+	if (dist.find(t) == dist.end()){
+		cout << -1 << endl;
+	}
+	else{
+		cout << dist[t] << endl;
+	}
 
-  ofs << dist[s] << " ";
-  ofs << endl
-      << endl;
-
-  q.push(s);
-
-  ofs << typeid(q.front()).name() << " ";
-  ofs << endl << endl;
-
-  while (q.size())
-  {
-    s = q.front();
-
-    rep(i, n)
-            ofs
-        << s[i] << " ";
-    ofs << "(1)---" << endl
-        << endl;
-
-    q.pop();
-    int d = dist[s];
-
-    ofs << "(*)---" << d << "---" << endl;
-
-    rep(v, n) if (s[v] == -1)
-    {
-      for (int u : to[v])
-      {
-        swap(s[u], s[v]);
-
-        ofs << "u: " << u << endl;
-        ofs << "v: " << v << endl;
-        rep(i, n)
-                ofs
-            << s[i] << " ";
-        ofs << "(2)---" << endl
-            << endl;
-
-        if (dist.find(s) == dist.end())
-        {
-          dist[s] = d + 1;
-
-          ofs << "u: " << u << endl;
-          ofs << "v: " << v << endl;
-          rep(i, n)
-                  ofs
-              << s[i] << " ";
-          ofs << "(push)---" << endl
-              << endl;
-
-          q.push(s);
-        }
-        else
-        {
-          ofs << "u: " << u << endl;
-          ofs << "v: " << v << endl;
-          rep(i, n)
-                  ofs
-              << s[i] << " ";
-          ofs << "(Nopush)---" << endl
-              << endl;
-        }
-        swap(s[u], s[v]);
-        ofs << "u: " << u << endl;
-        ofs << "v: " << v << endl;
-        rep(i, n)
-                ofs
-            << s[i] << " ";
-        ofs << "(3)---" << endl
-            << endl;
-      }
-    }
-  }
-  if (dist.find(t) == dist.end())
-    cout << -1 << endl;
-  else
-    cout << dist[t] << endl;
-
-  ofs.close();
-
-  return 0;
+    return EXIT_SUCCESS;
 }
