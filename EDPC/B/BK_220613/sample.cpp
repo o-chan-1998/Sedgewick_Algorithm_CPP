@@ -35,32 +35,36 @@ using vvl = vv<long>;
 using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
-const int INF = 1 << 30;
 
-int n, k;
-int h[100010];
+const ll INF = 1LL << 60;
 
-int dp[100010];
+int main()
+{
+	// IO高速化のおまじない
+    ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-int main() {
-    cin >> n >> k;
-    rep(i,n){
-        cin >> h[i];
+	int n, k;
+	cin >> n >> k;
+
+	vll h(n+k,0);
+
+	rep(i,n){
+		cin >> h[i];
 	}
 
-    rep(i,100010){
-        dp[i] = INF;
-	}
+	vll dp(n+k,INF);
 
-    dp[0] = 0;
-    rep(i,n){
-        rep1(j,k){
-			dp[i + j] = min(dp[i + j], dp[i] + abs(h[i + j] - h[i]));
+	dp[0]=0;
+
+	rep(i,n){
+		rep1(j,k){
+			dp[i+j]=min(dp[i+j],dp[i]+abs(h[i+j]-h[i]));
 		}
 	}
 
-    cout << dp[n - 1] << endl;
-
+	cout << dp[n-1] << endl;
 
     return EXIT_SUCCESS;
 }
