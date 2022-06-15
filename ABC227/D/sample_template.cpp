@@ -43,59 +43,6 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	int n, k;
-	cin >> n >> k;
-	vvi a(n, vi(n));
-	rep(i,n){
-		rep(j,n){
-			cin >> a[i][j];
-		}
-	}
-	int L=k*k/2+1;
-	int wa=-1, ac=1001001001;
-	while(wa+1<ac){
-		int wj=(wa+ac)/2;
-		bool ok=false;
-		{
-			vvi s(n+1, vi(n+1));	// 累積和の計算
-			rep(i,n){
-				rep(j,n){
-					if(a[i][j]>wj){
-						s[i+1][j+1]=1;
-					}else{
-						s[i+1][j+1]=0;
-					}
-				}
-			}
-			rep(i,n+1){	// 横方向の累積和
-				rep(j,n){
-					s[i][j+1]+=s[i][j];
-				}
-			}
-			rep(i,n){	// 縦方向の累積和
-				rep(j,n+1){
-					s[i+1][j]+=s[i][j];
-				}
-			}
-			rep(i,n-k+1){
-				rep(j,n-k+1){
-					int now = s[i+k][j+k];	// 右下
-					now -= s[i][j+k];
-					now -= s[i+k][j];
-					now += s[i][j];
-					if(now<L){
-						ok=true;
-					}
-				}
-			}
-		}
-		if(ok){
-			ac = wj;
-		}else{
-			wa = wj;
-		}
-	}
-	cout << ac << endl;
 
     return EXIT_SUCCESS;
 }
