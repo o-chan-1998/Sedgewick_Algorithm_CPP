@@ -36,6 +36,13 @@ using ll = long long;
 using vll = vc<ll>;
 using vvll = vv<ll>;
 
+#define INF 1LL<<60
+
+int n, W;
+// [品物の数][価値✕品物の数]
+ll dp[110][110000];
+ll w[110], v[110];
+
 int main()
 {
 	// IO高速化のおまじない
@@ -43,59 +50,31 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
-	int n, k;
-	cin >> n >> k;
-	vvi a(n, vi(n));
-	rep(i,n){
-		rep(j,n){
-			cin >> a[i][j];
+	cin >> n >> W;
+	rep1(i,n){
+		cin >> w[i] >> v[i];
+	}
+	rep1(i,110000-1){
+		dp[0][i] = INF;
+	}
+
+	rep1(i,n){
+		rep(j,110000){
+			dp[i][j] = dp[i-1][j];
+			if(j-v[i]>=0){
+				dp[i][j] = min(dp[i][j], dp[i-1][j-v[i]]+w[i]);
+			}
 		}
 	}
-	int L=k*k/2+1;
-	int wa=-1, ac=1001001001;
-	while(wa+1<ac){
-		int wj=(wa+ac)/2;
-		bool ok=false;
-		{
-			vvi s(n+1, vi(n+1));	// 累積和の計算
-			rep(i,n){
-				rep(j,n){
-					if(a[i][j]>wj){
-						s[i+1][j+1]=1;
-					}else{
-						s[i+1][j+1]=0;
-					}
-				}
-			}
-			rep(i,n+1){	// 横方向の累積和
-				rep(j,n){
-					s[i][j+1]+=s[i][j];
-				}
-			}
-			rep(i,n){	// 縦方向の累積和
-				rep(j,n+1){
-					s[i+1][j]+=s[i][j];
-				}
-			}
-			rep(i,n-k+1){
-				rep(j,n-k+1){
-					int now = s[i+k][j+k];	// 右下
-					now -= s[i][j+k];
-					now -= s[i+k][j];
-					now += s[i][j];
-					if(now<L){
-						ok=true;
-					}
-				}
-			}
-		}
-		if(ok){
-			ac = wj;
-		}else{
-			wa = wj;
+
+	int ans = 0;
+	rep(v, 110000){
+		if(dp[n][v]<=W){
+			ans = max(ans, v);
 		}
 	}
-	cout << ac << endl;
+
+	cout << ans << endl;
 
     return EXIT_SUCCESS;
 }
