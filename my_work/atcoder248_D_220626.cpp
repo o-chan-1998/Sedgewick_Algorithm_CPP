@@ -45,6 +45,8 @@ int main()
 
 	int n=5;
 	vi a{3, 1, 4, 1, 5};
+
+	// 与えられた数列に対して各値のインデックスを配列に格納する
 	vvi is(n+1);
 	rep(i,n){
 		is[a[i]].push_back(i);
@@ -52,7 +54,9 @@ int main()
 	int q=4;
 	vvi query{{1,5,1},{2,4,3},{1,5,2},{1,3,3}};
 	rep(qi,q) {
-		int l=query[qi][0], r=query[qi][1], x=query[qi][2];
+		int l=query[qi][0];	// 左端
+		int r=query[qi][1]; // 右端
+		int x=query[qi][2];	// 探索する値
 		--l; --r;
 		auto f = [&](vector<int>& is, int r) {
 			return upper_bound(is.begin(),is.end(),r)-is.begin();
