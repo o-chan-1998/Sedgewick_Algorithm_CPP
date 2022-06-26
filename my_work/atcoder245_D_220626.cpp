@@ -43,5 +43,20 @@ int main()
 	cin.tie(0);
 	cout.tie(0);
 
+	int n=1, m=2;
+
+	vi a{2,1}, c{12, 14, 8, 2};
+	vi b(m+1);
+
+	for (int i = m; i >= 0; --i) {
+		b[i] = c[n+i]/a[n];
+		rep(j,n+1) {
+			c[i+j] -= a[j]*b[i];
+		}
+	}
+	rep(i,m+1){
+		cout << b[i] << endl;
+	}
+
     return EXIT_SUCCESS;
 }
