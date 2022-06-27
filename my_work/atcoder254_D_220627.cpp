@@ -42,5 +42,26 @@ int main(){
 	cin.tie(0);
 	cout.tie(0);
 
+	int n=10;
+	vector<int> f(n+1);
+	rep(i,n+1) f[i] = i;
+	for (int i = 2; i <= n; i++) {
+		int x = i*i;
+		if (x > n) 
+			break;
+		for (int j = x; j <= n; j += x) {
+			while (f[j]%x == 0) {
+				f[j] /= x;	// 平方数で割る
+			}
+		}
+	}
+	vector<int> c(n+1);
+	for (int i = 1; i <= n; i++) 
+		c[f[i]]++;
+	ll ans = 0;
+	rep(i,n+1) 
+		ans += ll(c[i])*c[i];
+	cout << ans << endl;
+
     return EXIT_SUCCESS;
 }
