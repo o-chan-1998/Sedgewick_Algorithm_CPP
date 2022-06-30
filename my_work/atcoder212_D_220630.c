@@ -8,7 +8,7 @@ void swap(long *x,long *y){
 
 void push(long *arr,long k){
 	arr[++*arr]=k;
-	for(long i=*arr;i>1&&arr[i]<arr[i/2];i/=2){
+	for(long i=*arr; i>1 && arr[i]<arr[i/2]; i/=2){
 		swap(arr+i,arr+i/2);
 	}
 }
@@ -33,7 +33,7 @@ int main(){
 	int Q=5;
 	int target_que[10][2]={{1,3},{1,5},{3,-1},{2,2},{3,-1}};
 	
-	long heap[1<<18],S;	/////////////////////////////////////////////////////////////////////////////何故か巨大な配列が必要！
+	long heap[10]={0},S;
 
 	for(int i=0; i<Q; i++){
 		int t = target_que[i][0];
