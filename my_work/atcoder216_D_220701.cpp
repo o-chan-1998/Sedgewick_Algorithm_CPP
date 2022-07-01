@@ -44,5 +44,45 @@ int main(){
 	cin.tie(0);
 	cout.tie(0);
 
+	int n=2, m=2;
+	vvi a={{1,2},{1,2}};
+	vvi pos(n);
+	int kk[]={2,2};
+	rep(i,m) {
+		int k=kk[i];
+		rep(j,k) {
+			a[i][j]--;
+			pos[a[i][j]].push_back(i);
+		}
+	}
+	vi cnt(n);
+	queue<int> q;
+	rep(i,m) {
+		int t = a[i].back();
+		cnt[t]++;
+	}
+	rep(i,n) 
+		if (cnt[i] == 2) 
+			q.push(i);
+	int take = 0;
+	while (q.size()) {
+		int x = q.front(); q.pop();
+		take++;
+		rep(i,2) {
+			int p = pos[x][i];
+			a[p].pop_back();
+			if (a[p].size()) {
+				int t = a[p].back();
+				cnt[t]++;
+				if (cnt[t] == 2) 
+					q.push(t);
+			}
+		}
+	}
+	if (take == n) 
+		cout << "Yes" << endl;
+	else 
+		cout << "No" << endl;
+
     return EXIT_SUCCESS;
 }
