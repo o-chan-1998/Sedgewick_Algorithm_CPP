@@ -1,26 +1,52 @@
-#include<stdio.h>
-int max(int a,int b){return a>b?a:b;}
-int d[10][10];
-char C[111][111];
+//bfs
+#include <stdio.h>
 
-int rec(int i,int j){
-	d[i][j]=d[i][j];
-	if(C[i][j]=='.'){
-		return max(rec(i+1,j),rec(i,j+1))+1;
-	}else{
-		return 0;
-	}
-}
+int max=0,max1=0,max2=0,cnt1=0,cnt2=0;
+
 
 int main(){
-	int W=3;
-	int H=4;
-	char *str_temp[3]={".#..","..#.","..##"};
+    int h=3,w=4;
 
-	for(int i=0;i<W;i++){
-		for(int j=0;j<H;j++)
-			C[i][j] = str_temp[i][j];
-	}
+	int c[5][5],d[5][5]={0};
+    int max=0,i,j;
+    char *ch[101]={".#..","..#.","..##"};
 
-	printf("%d\n",rec(0,0));
+	d[0][0]=1;
+
+    for(i=0;i<h;i++){
+        for(j=0;j<w;j++){
+            if(ch[i][j]=='.') 
+				c[i][j]=0;	// .を0に置き換える
+            else 
+				c[i][j]=1;	// #を1に置き換える
+        }
+    }
+    for(i=0;i<h;i++){
+        for(j=0;j<w;j++){
+
+            if(c[i][j]==1 || d[i][j]==0)
+				continue;
+
+            if(max<d[i][j])
+				max=d[i][j];
+
+			// d[i][1]=d[i][0]+1
+			// d[i][2]=d[i][1]+1
+			// d[i][3]=d[i][2]+1
+			// d[i][4]=d[i][3]+1
+			d[i][j+1]=d[i][j]+1;
+			// d[i+1][0]=d[i][1]+1
+			// d[i+1][1]=d[i][2]+1
+			// d[i+1][2]=d[i][3]+1
+			// d[i+1][3]=d[i][4]+1
+            d[i+1][j]=d[i][j+1];
+
+        }
+    }
+
+
+    printf("%d\n",max);
+
+    return 0;
+    
 }
